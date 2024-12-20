@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shop_fashion/screens/forgot.dart';
 import 'package:shop_fashion/screens/signin.dart';
+import 'package:shop_fashion/screens/signup.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 
 void main() {

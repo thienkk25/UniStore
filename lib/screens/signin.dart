@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/textFormField_view.dart';
+import 'package:shop_fashion/screens/forgot.dart';
+import 'package:shop_fashion/screens/signup.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -71,7 +73,7 @@ class _SigninState extends State<Signin> {
                   Padding(
                     padding: EdgeInsets.only(left: 20, right: 20),
                     child: Text(
-                      "Signin with your email and password or continue with secal media",
+                      "Signin with your email and password or continue with social media",
                       style: TextStyle(color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
@@ -83,7 +85,7 @@ class _SigninState extends State<Signin> {
           SizedBox(
               height: (availableHeight -
                       (availableHeight - (availableHeight / 6)) / 5) /
-                  1.7,
+                  2,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -127,26 +129,36 @@ class _SigninState extends State<Signin> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Wrap(
-                          alignment: WrapAlignment.spaceBetween,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Checkbox(
-                                    value: checkboxValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        checkboxValue = value!;
-                                      });
-                                    }),
-                                const Text("Remember me")
+                                  value: checkboxValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      checkboxValue = value!;
+                                    });
+                                  },
+                                  activeColor: Colors.orange,
+                                ),
+                                const Text(
+                                  "Remember me",
+                                  style: TextStyle(fontSize: 13),
+                                )
                               ],
                             ),
-                            TextButton(
-                              onPressed: () {},
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const Forgot()));
+                              },
                               child: const Text(
                                 "Forgot Password",
                                 style: TextStyle(
+                                    fontSize: 13,
                                     color: Colors.orange,
                                     decoration: TextDecoration.underline,
                                     decorationColor: Colors.orange),
@@ -161,17 +173,19 @@ class _SigninState extends State<Signin> {
               )),
           SizedBox(
             height: 40,
-            width: 200,
+            width: 250,
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  if (_keyForm.currentState!.validate()) {}
+                  if (_keyForm.currentState!.validate()) {
+                    if (checkboxValue != true) {}
+                  }
                 }),
           ),
           SizedBox(
             height: ((availableHeight -
                         (availableHeight - (availableHeight / 6)) / 5) /
-                    4) -
+                    3) -
                 40,
             width: double.infinity,
             child: Padding(
@@ -214,9 +228,16 @@ class _SigninState extends State<Signin> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text("Don't have an account?"),
+                      const Text(
+                        "Don't have an account?",
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const Signup(),
+                          ));
+                        },
                         child: const Text(
                           "Sign Up",
                           style: TextStyle(color: Colors.orange),
