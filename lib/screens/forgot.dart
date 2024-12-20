@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/custom/textFormField_view.dart';
+import 'package:shop_fashion/custom/text_form_field_view.dart';
 import 'package:shop_fashion/screens/signup.dart';
 
 class Forgot extends StatefulWidget {
@@ -93,7 +93,7 @@ class _ForgotState extends State<Forgot> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextformfieldView(
+                        TextFormFieldView(
                           textEditingController: emailController,
                           labelText: "Email",
                           hintText: "Enter your email",

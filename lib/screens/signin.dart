@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/custom/textFormField_view.dart';
+import 'package:shop_fashion/custom/text_form_field_view.dart';
 import 'package:shop_fashion/screens/forgot.dart';
 import 'package:shop_fashion/screens/signup.dart';
 
@@ -95,7 +95,7 @@ class _SigninState extends State<Signin> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        TextformfieldView(
+                        TextFormFieldView(
                           textEditingController: emailController,
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -113,7 +113,7 @@ class _SigninState extends State<Signin> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextformfieldView(
+                        TextFormFieldView(
                           textEditingController: pwController,
                           labelText: "Password",
                           hintText: "Enter your pasword",

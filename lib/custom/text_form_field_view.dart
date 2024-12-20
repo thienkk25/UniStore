@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextformfieldView extends StatelessWidget {
+class TextFormFieldView extends StatelessWidget {
   final String labelText;
   final String hintText;
   final Icon icon;
@@ -8,7 +8,7 @@ class TextformfieldView extends StatelessWidget {
   final TextEditingController textEditingController;
   final bool obscureText;
 
-  const TextformfieldView({
+  const TextFormFieldView({
     super.key,
     required this.labelText,
     required this.hintText,
