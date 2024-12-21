@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
               label: "Cart"),
           NavigationDestination(
               icon: Icon(
-                Icons.favorite_rounded,
+                Icons.favorite_border_outlined,
                 color: selectIndex == 3 ? Colors.orange : Colors.black,
               ),
               label: "Wishlist"),

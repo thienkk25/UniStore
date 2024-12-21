@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/text_form_field_view.dart';
+import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/forgot.dart';
 import 'package:shop_fashion/screens/signup.dart';
 
@@ -177,9 +178,16 @@ class _SigninState extends State<Signin> {
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  if (_keyForm.currentState!.validate()) {
-                    if (checkboxValue != true) {}
-                  }
+                  //@@
+                  // if (_keyForm.currentState!.validate()) {
+                  //   if (checkboxValue != true) {}
+
+                  // }
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => const Homeclient()),
+                  //   (route) => false, // Loại bỏ tất cả các màn hình trước đó
+                  // );
                 }),
           ),
           SizedBox(
