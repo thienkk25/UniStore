@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 
 class InfoProduct extends StatefulWidget {
@@ -17,6 +19,12 @@ class _InfoProductState extends State<InfoProduct> {
   int selectedIndexImage = 0;
   List<String> tabSupport = ["Description", "Reviews", "How to use"];
   int selectedIndexSupport = 0;
+  int currentSupportPageProvider = 0;
+  List<Widget> pagesSupport = [
+    const PageOneSupport(),
+    const PageTwoSupport(),
+    const PageThreeSupport(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +104,8 @@ class _InfoProductState extends State<InfoProduct> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const SizedBox(width: 10), // Duy trì khoảng cách nếu cần
                     Container(
                         height: 40,
                         width: 40,
@@ -160,6 +167,7 @@ class _InfoProductState extends State<InfoProduct> {
                               onTap: () {
                                 setState(() {
                                   selectedIndexSupport = index;
+                                  currentSupportPageProvider = index;
                                 });
                               },
                               child: Container(
@@ -181,12 +189,22 @@ class _InfoProductState extends State<InfoProduct> {
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      IndexedStack(
+                        index: currentSupportPageProvider,
+                        children: pagesSupport,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -315,5 +333,211 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
         ),
       ],
     ));
+  }
+}
+
+class PageOneSupport extends StatefulWidget {
+  const PageOneSupport({super.key});
+
+  @override
+  State<PageOneSupport> createState() => _PageOneSupportState();
+}
+
+class _PageOneSupportState extends State<PageOneSupport> {
+  List<double> capacity = [150, 250, 350];
+  int? selectedIndexCapacity;
+  TextEditingController quantityController = TextEditingController();
+  @override
+  void initState() {
+    quantityController.text = "1";
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const ReadMoreText(
+          "The Curology cleanser works into a gentle, lightly foaming lather to simply clean your skin, leaving it balanced, hydrated, soft, and refreshed.",
+          style: TextStyle(color: Colors.grey),
+          trimMode: TrimMode.Line,
+          trimLines: 3,
+          colorClickableText: Colors.black,
+          trimCollapsedText: 'Show more',
+          trimExpandedText: 'Show less',
+          moreStyle:
+              TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+          lessStyle:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          height: 30,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: capacity.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndexCapacity = index;
+                    });
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: selectedIndexCapacity == index
+                          ? Colors.orange
+                          : Colors.grey[200],
+                    ),
+                    child: Text(
+                      "${capacity[index]} ml",
+                      style: TextStyle(
+                          color: selectedIndexCapacity == index
+                              ? Colors.white
+                              : Colors.orange),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Quantity:"),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {});
+                        if (quantityController.text.isEmpty) {
+                          quantityController.text = "1";
+                        } else if (int.parse(quantityController.text) == 999) {
+                        } else {
+                          quantityController.text =
+                              (int.parse(quantityController.text) + 1)
+                                  .toString();
+                        }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            color: Colors.grey[300],
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: Colors.orange,
+                          ))),
+                ),
+                SizedBox(
+                  height: 20,
+                  width: 40,
+                  child: TextField(
+                    controller: quantityController,
+                    style: const TextStyle(fontSize: 14),
+                    cursorHeight: 14,
+                    cursorColor: Colors.orange,
+                    decoration: const InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.zero,
+                        borderSide: BorderSide(width: 1),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: -2, horizontal: 0), // Căn giữa nội dung
+                    ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3)
+                    ],
+                    maxLines: 1,
+                    textAlign: TextAlign.center, // Căn giữa nội dung văn bản
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: GestureDetector(
+                      onTap: () {
+                        setState(() {});
+                        if (quantityController.text.isEmpty) {
+                          quantityController.text = "1";
+                        } else if (int.parse(quantityController.text) == 0 ||
+                            int.parse(quantityController.text) == 1) {
+                        } else {
+                          quantityController.text =
+                              (int.parse(quantityController.text) - 1)
+                                  .toString();
+                        }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            color: Colors.grey[300],
+                          ),
+                          child: const Icon(
+                            Icons.remove,
+                            size: 20,
+                            color: Colors.orange,
+                          ))),
+                ),
+              ],
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class PageTwoSupport extends StatefulWidget {
+  const PageTwoSupport({super.key});
+
+  @override
+  State<PageTwoSupport> createState() => _PageTwoSupportState();
+}
+
+class _PageTwoSupportState extends State<PageTwoSupport> {
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [Text("Review")],
+    );
+  }
+}
+
+class PageThreeSupport extends StatefulWidget {
+  const PageThreeSupport({super.key});
+
+  @override
+  State<PageThreeSupport> createState() => _PageThreeSupportState();
+}
+
+class _PageThreeSupportState extends State<PageThreeSupport> {
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [Text("How to use")],
+    );
   }
 }

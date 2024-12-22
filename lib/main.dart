@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shop_fashion/screens/bottomNavgBar/explore.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
@@ -13,9 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Welcome(),
+    return const ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Welcome(),
+      ),
     );
   }
 }

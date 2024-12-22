@@ -18,7 +18,11 @@ class _HomeclientState extends State<Homeclient> {
   List<String> dataList = ["thien", "dien", "thi"];
   List<String> suggestions = [];
   Timer? delayInput;
-  List<String> types = ["All", "Official Store", "Nearest"];
+  List<String> types = [
+    "All",
+    "Official Store",
+    "Nearest",
+  ];
   int selectedIndexType = 0;
   List popularProducts = [
     {
@@ -26,27 +30,29 @@ class _HomeclientState extends State<Homeclient> {
       "notes": "note A",
       "price": 1.00,
       "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016959/flutter/images/pizza_viy2lv.jpg"
+          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/pho_bjsnip.jpg"
     },
     {
       "name": "B",
       "notes": "note B",
       "price": 2.00,
       "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016959/flutter/images/pizza_viy2lv.jpg"
+          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/bunbohue_xp0hkv.jpg"
     },
     {
       "name": "C",
       "notes": "note C",
       "price": 3.00,
       "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016959/flutter/images/pizza_viy2lv.jpg"
+          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/banhxeo_rweqcc.jpg"
     },
   ];
-
+  late List<bool> isCheckedFilter;
+  bool isFilter = false;
   @override
   void initState() {
     suggestions = dataList;
+    isCheckedFilter = List.generate(types.length, (index) => false);
     super.initState();
   }
 
@@ -83,7 +89,7 @@ class _HomeclientState extends State<Homeclient> {
                   .toList();
               return searchList.isNotEmpty
                   ? List.generate(
-                      searchList.length,
+                      min(searchList.length, 20),
                       (index) => ListTile(
                         title: Text(searchList[index]),
                       ),
@@ -121,20 +127,109 @@ class _HomeclientState extends State<Homeclient> {
                     height: 40,
                     width: 100,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(bottom: BorderSide(width: 1))),
+                              child: const Text(
+                                "Filter",
+                              ),
+                            ),
+                            content: StatefulBuilder(
+                              builder: (BuildContext context,
+                                  StateSetter setDialogState) {
+                                // `setDialogState` là hàm callback để thay đổi trạng thái của widget
+                                return SizedBox(
+                                  height: 300, // Chiều cao của dialog
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.5,
+                                  child: SingleChildScrollView(
+                                    child: Wrap(
+                                      clipBehavior: Clip.antiAlias,
+                                      spacing: 5,
+                                      runSpacing:
+                                          5, // Khoảng cách giữa các dòng
+                                      children: List.generate(
+                                        types.length - 1,
+                                        (index) {
+                                          index++;
+                                          return FilterChip(
+                                            side: const BorderSide(
+                                                color: Colors.orange),
+                                            selected: isCheckedFilter[index],
+                                            onSelected: (bool value) {
+                                              setDialogState(() {
+                                                isCheckedFilter[index] =
+                                                    value; // Cập nhật trạng thái của chip
+                                              });
+                                            },
+                                            selectedColor: Colors.orange,
+                                            label: Text(types[index]),
+                                            labelStyle: TextStyle(
+                                                color: isCheckedFilter[index]
+                                                    ? Colors.white
+                                                    : Colors.orange),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            actions: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                    border: Border(top: BorderSide(width: 1))),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("Cancel"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        bool check = isCheckedFilter.any(
+                                          (element) => element == true,
+                                        );
+                                        setState(() {
+                                          check
+                                              ? isFilter = true
+                                              : isFilter = false;
+                                        });
+                                      },
+                                      child: const Text("Confirm"),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[300],
-                        ),
-                        child: const Row(
+                            borderRadius: BorderRadius.circular(20),
+                            color: isFilter ? Colors.orange : Colors.grey[300]),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.filter_alt_outlined),
+                            Icon(Icons.filter_alt_outlined,
+                                color: isFilter ? Colors.white : Colors.black),
                             Text(
                               "Filter",
-                              // style: TextStyle(color: Colors.green),
+                              style: TextStyle(
+                                color: isFilter ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -155,6 +250,9 @@ class _HomeclientState extends State<Homeclient> {
                                 onTap: () {
                                   setState(() {
                                     selectedIndexType = index;
+                                    isCheckedFilter = List.generate(
+                                        types.length, (index) => false);
+                                    isFilter = false;
                                   });
                                 },
                                 child: Container(
@@ -163,14 +261,16 @@ class _HomeclientState extends State<Homeclient> {
                                       horizontal: 16),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: selectedIndexType == index
-                                        ? Colors.orange
-                                        : Colors.grey[300],
+                                    color:
+                                        selectedIndexType == index && !isFilter
+                                            ? Colors.orange
+                                            : Colors.grey[300],
                                   ),
                                   child: Text(
                                     types[index],
                                     style: TextStyle(
-                                      color: selectedIndexType == index
+                                      color: selectedIndexType == index &&
+                                              !isFilter
                                           ? Colors.white
                                           : Colors.black,
                                     ),
