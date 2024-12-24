@@ -4,6 +4,8 @@ import 'package:shop_fashion/screens/bottomNavgBar/explore.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
+import 'package:shop_fashion/screens/utilities/profile.dart';
+import 'package:shop_fashion/screens/utilities/view_more.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 
 void main() {
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
     return const ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Welcome(),
+        home: Profile(),
       ),
     );
   }

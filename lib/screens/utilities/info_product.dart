@@ -28,6 +28,7 @@ class _InfoProductState extends State<InfoProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final PageController pageController = PageController();
     final double availableHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
@@ -44,7 +45,7 @@ class _InfoProductState extends State<InfoProduct> {
                     onPageChanged: (value) => setState(() {
                       selectedIndexImage = value;
                     }),
-                    // controller: PageController(),
+                    controller: pageController,
                     itemCount: imageProduct.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
@@ -213,7 +214,7 @@ class _InfoProductState extends State<InfoProduct> {
           gradient: LinearGradient(
             colors: [
               Colors.white,
-              Color.fromARGB(255, 255, 193, 99)
+              Colors.orangeAccent
             ], // Gradient từ đỏ sang xanh
             begin: Alignment.centerLeft, // Bắt đầu từ bên trái
             end: Alignment.centerRight, // Kết thúc ở bên phải

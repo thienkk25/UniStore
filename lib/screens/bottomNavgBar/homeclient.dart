@@ -1,10 +1,10 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
 import 'package:shop_fashion/screens/utilities/notify.dart';
 import 'package:shop_fashion/screens/utilities/profile.dart';
+import 'package:shop_fashion/screens/utilities/view_more.dart';
 
 class Homeclient extends StatefulWidget {
   const Homeclient({super.key});
@@ -16,8 +16,6 @@ class Homeclient extends StatefulWidget {
 class _HomeclientState extends State<Homeclient> {
   SearchController searchController = SearchController();
   List<String> dataList = ["thien", "dien", "thi"];
-  List<String> suggestions = [];
-  Timer? delayInput;
   List<String> types = [
     "All",
     "Official Store",
@@ -51,7 +49,6 @@ class _HomeclientState extends State<Homeclient> {
   bool isFilter = false;
   @override
   void initState() {
-    suggestions = dataList;
     isCheckedFilter = List.generate(types.length, (index) => false);
     super.initState();
   }
@@ -59,7 +56,6 @@ class _HomeclientState extends State<Homeclient> {
   @override
   void dispose() {
     searchController.dispose();
-    delayInput?.cancel();
     super.dispose();
   }
 
@@ -73,9 +69,6 @@ class _HomeclientState extends State<Homeclient> {
             viewHintText: "Search...",
             searchController: searchController,
             builder: (context, controller) {
-              controller.addListener(() {
-                onSearchChanged(controller.text);
-              });
               return IconButton(
                   onPressed: () {
                     controller.openView();
@@ -294,7 +287,13 @@ class _HomeclientState extends State<Homeclient> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ViewMore(
+                            textTitileAppbar: "Special Offer",
+                            data: popularProducts),
+                      ));
+                    },
                     child: const Text("View More",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -387,7 +386,13 @@ class _HomeclientState extends State<Homeclient> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ViewMore(
+                            textTitileAppbar: "Popular Product",
+                            data: popularProducts),
+                      ));
+                    },
                     child: const Text("View More",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -469,7 +474,13 @@ class _HomeclientState extends State<Homeclient> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ViewMore(
+                            textTitileAppbar: "New Arrivals",
+                            data: popularProducts),
+                      ));
+                    },
                     child: const Text("View More",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -545,7 +556,12 @@ class _HomeclientState extends State<Homeclient> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ViewMore(
+                            textTitileAppbar: "Product", data: popularProducts),
+                      ));
+                    },
                     child: const Text("View More",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -556,81 +572,65 @@ class _HomeclientState extends State<Homeclient> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                height: 400,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 0.65),
-                  itemCount: min(popularProducts.length, 24),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const InfoProduct(),
-                          )),
-                      child: SizedBox(
-                        height: 260,
-                        child: Card(
-                          clipBehavior: Clip.antiAlias,
-                          child: SizedBox(
-                            width: 200,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      popularProducts[index]['url'],
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(popularProducts[index]['name'],
-                                      style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold),
-                                      maxLines: 1),
-                                  Text(
-                                    popularProducts[index]['notes'],
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.grey),
-                                  ),
-                                  Text(
-                                    "\$ ${popularProducts[index]['price'].toString()}",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+              GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 210),
+                itemCount: min(popularProducts.length, 24),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const InfoProduct(),
+                        )),
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                popularProducts[index]['url'],
+                                height: 100,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            Text(popularProducts[index]['name'],
+                                style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 1),
+                            Text(
+                              popularProducts[index]['notes'],
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
+                            ),
+                            Text(
+                              "\$ ${popularProducts[index]['price'].toString()}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void onSearchChanged(String search) {
-    if (delayInput?.isActive ?? false) return delayInput?.cancel();
-
-    delayInput = Timer(const Duration(milliseconds: 300), () {
-      suggestions = dataList
-          .where((item) => item.toLowerCase().contains(search))
-          .toList();
-    });
   }
 }

@@ -178,10 +178,16 @@ class _SigninState extends State<Signin> {
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  //@@
+                  // TODO: Lam
                   // if (_keyForm.currentState!.validate()) {
-                  //   if (checkboxValue != true) {}
-
+                  //   if (checkboxValue != true) {
+                  //     Navigator.of(context).pushAndRemoveUntil(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const Home(),
+                  //       ),
+                  //       (route) => false,
+                  //     );
+                  //   }
                   // }
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
@@ -191,71 +197,64 @@ class _SigninState extends State<Signin> {
                   );
                 }),
           ),
-          SizedBox(
-            height: ((availableHeight -
-                        (availableHeight - (availableHeight / 6)) / 5) /
-                    3) -
-                40,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-google-logo-48.png"),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-facebook-logo-48.png"),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-apple-logo-50.png"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Don't have an account?",
-                        style: TextStyle(color: Colors.grey),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-google-logo-48.png"),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const Signup(),
-                          ));
-                        },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                      )
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-facebook-logo-48.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-apple-logo-50.png"),
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Don't have an account?",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Signup(),
+                        ));
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(color: Colors.orange),
+                      ),
+                    )
+                  ],
+                ),
+              ],
             ),
           )
         ],

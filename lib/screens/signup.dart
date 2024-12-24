@@ -156,63 +156,56 @@ class _SignupState extends State<Signup> {
                   if (_keyForm.currentState!.validate()) {}
                 }),
           ),
-          SizedBox(
-            height: ((availableHeight -
-                        (availableHeight - (availableHeight / 6)) / 5) /
-                    4) -
-                20,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-google-logo-48.png"),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-facebook-logo-48.png"),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Image.asset(
-                              "assets/icons/icons8-apple-logo-50.png"),
-                        ),
-                      ],
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-google-logo-48.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-facebook-logo-48.png"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                            "assets/icons/icons8-apple-logo-50.png"),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 40,
+                    right: 40,
+                  ),
+                  child: const Expanded(
+                    child: Text(
+                      "By continuing your confirm that you agree with our Term and Condition",
+                      style: TextStyle(color: Colors.grey, fontSize: 10),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 40,
-                      right: 40,
-                    ),
-                    child: const Expanded(
-                      child: Text(
-                        "By continuing your confirm that you agree with our Term and Condition",
-                        style: TextStyle(color: Colors.grey, fontSize: 10),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         ],
@@ -220,16 +213,3 @@ class _SignupState extends State<Signup> {
     );
   }
 }
-// RichText(
-//                     text: const TextSpan(children: [
-//                       TextSpan(
-//                         text:
-//                             "By continuing yourôcnfirm that you agree with our",
-//                         style: TextStyle(color: Colors.grey),
-//                       ),
-//                       TextSpan(
-//                         text: "Term and Condition",
-//                         style: TextStyle(color: Colors.grey),
-//                       ),
-//                     ]),
-//                   ),

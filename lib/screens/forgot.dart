@@ -122,35 +122,28 @@ class _ForgotState extends State<Forgot> {
                   if (_keyForm.currentState!.validate()) {}
                 }),
           ),
-          SizedBox(
-            height: ((availableHeight -
-                        (availableHeight - (availableHeight / 6)) / 4) /
-                    3) -
-                40,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Don't have an account?",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Signup(),
+                    ));
+                  },
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(color: Colors.orange),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Signup(),
-                      ));
-                    },
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         ],
