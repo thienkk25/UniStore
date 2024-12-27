@@ -16,8 +16,7 @@ class Wishlist extends ConsumerWidget {
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
     final productController = ref.watch(productControllerProvider);
-    final dataProduc = productController.dataAllProductController(ref);
-    List<String> dataListSearch = dataProduc.map((e) => e.title).toList();
+    List<Product> dataProduct = productController.dataAllProductController(ref);
     AsyncValue<List<Product>> popularProductsAsyncValue =
         productController.dataUriProductController(
             ref, "https://dummyjson.com/products?sortBy=rating&order=desc");
@@ -53,16 +52,66 @@ class Wishlist extends ConsumerWidget {
               searchController: searchController,
               suggestionsBuilder: (context, controller) {
                 final String data = controller.text.toLowerCase();
-                List<String> searchList = dataListSearch
+                List<String> searchList = dataProduct
+                    .map(
+                      (e) => e.title,
+                    )
                     .where((item) => item.toLowerCase().contains(data))
                     .toList();
                 return searchList.isNotEmpty
                     ? List.generate(
                         min(searchList.length, 20),
-                        (index) => ListTile(
-                          title: Text(searchList[index]),
-                        ),
-                      )
+                        (index) => InkWell(
+                              onTap: () =>
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => InfoProduct(
+                                            data: dataProduct[index],
+                                          ))),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    border:
+                                        Border(bottom: BorderSide(width: 1))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    leading: Image.network(
+                                      dataProduct[index].thumbnail,
+                                      fit: BoxFit.cover,
+                                      height: 50,
+                                      width: 50,
+                                    ),
+                                    title: Column(
+                                      children: [
+                                        Text(
+                                          searchList[index],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "\$ ${((dataProduct[index].price) / (1 - dataProduct[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              "\$ ${dataProduct[index].price}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ))
                     : [
                         const ListTile(
                           title: Text("No results found"),
@@ -76,74 +125,157 @@ class Wishlist extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: popularProductsAsyncValue.when(
-              data: (popularProducts) => GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    mainAxisExtent: 220),
-                itemCount: popularProducts.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => InfoProduct(
-                        data: [popularProducts[index]],
-                      ),
-                    )),
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                popularProducts[index].thumbnail,
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+              data: (popularProducts) => LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 650) {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              mainAxisExtent: 220),
+                      itemCount: popularProducts.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => InfoProduct(
+                              data: popularProducts[index],
+                            ),
+                          )),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      popularProducts[index].thumbnail,
+                                      height: 100,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    popularProducts[index].title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    popularProducts[index].description,
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.grey),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                        style: const TextStyle(
+                                            color: Colors.grey,
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "\$ ${popularProducts[index].price}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              popularProducts[index].title,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              mainAxisExtent: 220),
+                      itemCount: popularProducts.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => InfoProduct(
+                              data: popularProducts[index],
                             ),
-                            Text(
-                              popularProducts[index].description,
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.grey),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          )),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      popularProducts[index].thumbnail,
+                                      height: 100,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    popularProducts[index].title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    popularProducts[index].description,
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.grey),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                        style: const TextStyle(
+                                            color: Colors.grey,
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "\$ ${popularProducts[index].price}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "\$ ${popularProducts[index].price}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                          ),
+                        );
+                      },
+                    );
+                  }
                 },
               ),
               error: (error, stackTrace) => const Center(

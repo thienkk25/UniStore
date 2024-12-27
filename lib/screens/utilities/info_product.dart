@@ -7,7 +7,7 @@ import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
 
 class InfoProduct extends StatefulWidget {
-  final List<Product> data;
+  final Product data;
   const InfoProduct({
     super.key,
     required this.data,
@@ -19,7 +19,7 @@ class InfoProduct extends StatefulWidget {
 
 class _InfoProductState extends State<InfoProduct> {
   int selectedIndexImage = 0;
-  List<String> tabSupport = ["Description", "Reviews", "How to use"];
+  List<String> tabSupport = ["Description", "Reviews", "Policy"];
   int selectedIndexSupport = 0;
   int currentSupportPageProvider = 0;
 
@@ -27,10 +27,10 @@ class _InfoProductState extends State<InfoProduct> {
   Widget build(BuildContext context) {
     List<Widget> pagesSupport = [
       PageOneSupport(
-        description: widget.data[0].description,
+        description: widget.data.description,
       ),
-      const PageTwoSupport(),
-      const PageThreeSupport(),
+      PageTwoSupport(product: widget.data),
+      PageThreeSupport(product: widget.data),
     ];
     final PageController pageController = PageController();
     final double availableHeight = MediaQuery.of(context).size.height -
@@ -51,7 +51,7 @@ class _InfoProductState extends State<InfoProduct> {
                       selectedIndexImage = value;
                     }),
                     controller: pageController,
-                    itemCount: widget.data[0].images.length,
+                    itemCount: widget.data.images.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onDoubleTap: () {
@@ -60,12 +60,12 @@ class _InfoProductState extends State<InfoProduct> {
                               MaterialPageRoute(
                                 builder: (context) => ImageViewerPage(
                                   initialIndex: index,
-                                  imageProduct: widget.data[0].images,
+                                  imageProduct: widget.data.images,
                                 ),
                               ));
                         },
                         child: Image.network(
-                          widget.data[0].thumbnail,
+                          widget.data.thumbnail,
                           fit: BoxFit.cover,
                         ),
                       );
@@ -89,7 +89,7 @@ class _InfoProductState extends State<InfoProduct> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ...List.generate(
-                              widget.data[0].images.length,
+                              widget.data.images.length,
                               (index) => Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 4),
@@ -132,7 +132,7 @@ class _InfoProductState extends State<InfoProduct> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          widget.data[0].category,
+                          widget.data.category,
                           style: const TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -141,7 +141,7 @@ class _InfoProductState extends State<InfoProduct> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              widget.data[0].title,
+                              widget.data.title,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                               overflow: TextOverflow.ellipsis,
@@ -154,7 +154,7 @@ class _InfoProductState extends State<InfoProduct> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  "\$ ${((widget.data[0].price) / (1 - widget.data[0].discountPercentage / 100)).toStringAsFixed(2)}",
+                                  "\$ ${((widget.data.price) / (1 - widget.data.discountPercentage / 100)).toStringAsFixed(2)}",
                                   style: const TextStyle(
                                       color: Colors.grey,
                                       decoration: TextDecoration.lineThrough),
@@ -163,7 +163,7 @@ class _InfoProductState extends State<InfoProduct> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "\$ ${widget.data[0].price}",
+                                  "\$ ${widget.data.price}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -366,8 +366,6 @@ class PageOneSupport extends StatefulWidget {
 }
 
 class _PageOneSupportState extends State<PageOneSupport> {
-  List<double> capacity = [150, 250, 350];
-  int? selectedIndexCapacity;
   TextEditingController quantityController = TextEditingController();
   @override
   void initState() {
@@ -394,42 +392,6 @@ class _PageOneSupportState extends State<PageOneSupport> {
         ),
         const SizedBox(
           height: 10,
-        ),
-        SizedBox(
-          height: 30,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: capacity.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIndexCapacity = index;
-                    });
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: selectedIndexCapacity == index
-                          ? Colors.orange
-                          : Colors.grey[200],
-                    ),
-                    child: Text(
-                      "${capacity[index]} ml",
-                      style: TextStyle(
-                          color: selectedIndexCapacity == index
-                              ? Colors.white
-                              : Colors.orange),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
         ),
         const SizedBox(
           height: 20,
@@ -533,7 +495,8 @@ class _PageOneSupportState extends State<PageOneSupport> {
 }
 
 class PageTwoSupport extends StatefulWidget {
-  const PageTwoSupport({super.key});
+  final Product product;
+  const PageTwoSupport({super.key, required this.product});
 
   @override
   State<PageTwoSupport> createState() => _PageTwoSupportState();
@@ -542,14 +505,68 @@ class PageTwoSupport extends StatefulWidget {
 class _PageTwoSupportState extends State<PageTwoSupport> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [Text("Review")],
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Icon(
+              Icons.star,
+              color: Colors.orange,
+            ),
+            Text(widget.product.rating.toString())
+          ],
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: 3,
+          itemBuilder: (context, index) => ListTile(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          widget.product.reviews[index].reviewerName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                                widget.product.reviews[index].rating.toString())
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(
+                      widget.product.reviews[index].date.toIso8601String(),
+                      style: TextStyle(fontSize: 8, color: Colors.grey[500]),
+                    )
+                  ],
+                ),
+                Text(
+                  widget.product.reviews[index].reviewerEmail,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                ),
+                Text(widget.product.reviews[index].comment),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }
 
 class PageThreeSupport extends StatefulWidget {
-  const PageThreeSupport({super.key});
+  final Product product;
+  const PageThreeSupport({super.key, required this.product});
 
   @override
   State<PageThreeSupport> createState() => _PageThreeSupportState();
@@ -558,8 +575,31 @@ class PageThreeSupport extends StatefulWidget {
 class _PageThreeSupportState extends State<PageThreeSupport> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [Text("How to use")],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Warranty Information: ${widget.product.warrantyInformation}",
+          style: TextStyle(color: Colors.grey[500]),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Shipping Information: ${widget.product.shippingInformation}",
+          style: TextStyle(color: Colors.grey[500]),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Return Policy: ${widget.product.returnPolicy}",
+          style: TextStyle(color: Colors.grey[500]),
+        ),
+      ],
     );
   }
 }

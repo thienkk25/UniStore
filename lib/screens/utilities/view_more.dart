@@ -63,7 +63,7 @@ class ViewMore extends StatelessWidget {
                 return GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => InfoProduct(
-                      data: [data[index]],
+                      data: data[index],
                     ),
                   )),
                   child: Card(
