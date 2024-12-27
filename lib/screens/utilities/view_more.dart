@@ -4,8 +4,7 @@ import 'package:shop_fashion/screens/utilities/info_product.dart';
 
 class ViewMore extends StatelessWidget {
   final String textTitileAppbar;
-  // final List<Product> data;
-  final List data;
+  final List<Product> data;
 
   const ViewMore(
       {super.key, required this.textTitileAppbar, required this.data});

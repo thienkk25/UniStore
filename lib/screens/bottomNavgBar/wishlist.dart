@@ -1,48 +1,26 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shop_fashion/controllers/product_controller.dart';
+import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
 
-class Wishlist extends StatefulWidget {
+class Wishlist extends ConsumerWidget {
   const Wishlist({super.key});
 
   @override
-  State<Wishlist> createState() => _WishlistState();
-}
-
-class _WishlistState extends State<Wishlist> {
-  SearchController searchController = SearchController();
-  List<String> dataList = ["thien", "dien", "thi"];
-
-  List popularProducts = [
-    {
-      "name": "A",
-      "notes": "note A",
-      "price": 1.00,
-      "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/pho_bjsnip.jpg"
-    },
-    {
-      "name": "B",
-      "notes": "note B",
-      "price": 2.00,
-      "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/bunbohue_xp0hkv.jpg"
-    },
-    {
-      "name": "C",
-      "notes": "note C",
-      "price": 3.00,
-      "url":
-          "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/banhxeo_rweqcc.jpg"
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    SearchController searchController = SearchController();
     final double availableHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
+    final productController = ref.watch(productControllerProvider);
+    final dataProduc = productController.dataAllProductController(ref);
+    List<String> dataListSearch = dataProduc.map((e) => e.title).toList();
+    AsyncValue<List<Product>> popularProductsAsyncValue =
+        productController.dataUriProductController(
+            ref, "https://dummyjson.com/products?sortBy=rating&order=desc");
     return Scaffold(
         body: Column(
       children: [
@@ -75,7 +53,7 @@ class _WishlistState extends State<Wishlist> {
               searchController: searchController,
               suggestionsBuilder: (context, controller) {
                 final String data = controller.text.toLowerCase();
-                List<String> searchList = dataList
+                List<String> searchList = dataListSearch
                     .where((item) => item.toLowerCase().contains(data))
                     .toList();
                 return searchList.isNotEmpty
@@ -97,56 +75,83 @@ class _WishlistState extends State<Wishlist> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  mainAxisExtent: 220),
-              itemCount: popularProducts.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => InfoProduct(
-                      data: popularProducts[index],
-                    ),
-                  )),
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              popularProducts[index]['url'],
-                              height: 100,
-                              fit: BoxFit.cover,
+            child: popularProductsAsyncValue.when(
+              data: (popularProducts) => GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 220),
+                itemCount: popularProducts.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => InfoProduct(
+                        data: [popularProducts[index]],
+                      ),
+                    )),
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                popularProducts[index].thumbnail,
+                                height: 100,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(popularProducts[index]['name'],
+                            const SizedBox(height: 10),
+                            Text(
+                              popularProducts[index].title,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              popularProducts[index].description,
                               style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 1),
-                          Text(
-                            popularProducts[index]['notes'],
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
-                          ),
-                          Text(
-                            "\$ ${popularProducts[index]['price'].toString()}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                                  fontSize: 12, color: Colors.grey),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "\$ ${popularProducts[index].price}",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
+              error: (error, stackTrace) => const Center(
+                child: Text("Error"),
+              ),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           ),
         ),

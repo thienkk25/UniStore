@@ -15,15 +15,9 @@ class ProductController {
     );
   }
 
-  List<Product> dataUriProductController(WidgetRef ref, String uri) {
-    // Watch the FutureProvider for data and handle loading state properly.
-    final productAsyncValue = ref.watch(dataUriProductProvider(uri));
-
-    return productAsyncValue.when(
-      data: (products) => products, // Khi có dữ liệu, trả về danh sách sản phẩm
-      loading: () => [], // Trả về danh sách rỗng khi đang tải dữ liệu
-      error: (error, stack) => [], // Trả về danh sách rỗng nếu có lỗi
-    );
+  AsyncValue<List<Product>> dataUriProductController(
+      WidgetRef ref, String uri) {
+    return ref.watch(dataUriProductProvider(uri));
   }
 
   void fetchDataProductController(WidgetRef ref) {

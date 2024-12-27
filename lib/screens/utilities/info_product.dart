@@ -22,18 +22,21 @@ class _InfoProductState extends State<InfoProduct> {
   List<String> tabSupport = ["Description", "Reviews", "How to use"];
   int selectedIndexSupport = 0;
   int currentSupportPageProvider = 0;
-  List<Widget> pagesSupport = [
-    const PageOneSupport(),
-    const PageTwoSupport(),
-    const PageThreeSupport(),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pagesSupport = [
+      PageOneSupport(
+        description: widget.data[0].description,
+      ),
+      const PageTwoSupport(),
+      const PageThreeSupport(),
+    ];
     final PageController pageController = PageController();
     final double availableHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -48,7 +51,7 @@ class _InfoProductState extends State<InfoProduct> {
                       selectedIndexImage = value;
                     }),
                     controller: pageController,
-                    itemCount: widget.data.length,
+                    itemCount: widget.data[0].images.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onDoubleTap: () {
@@ -57,12 +60,12 @@ class _InfoProductState extends State<InfoProduct> {
                               MaterialPageRoute(
                                 builder: (context) => ImageViewerPage(
                                   initialIndex: index,
-                                  imageProduct: widget.data[index].images,
+                                  imageProduct: widget.data[0].images,
                                 ),
                               ));
                         },
                         child: Image.network(
-                          widget.data[index].thumbnail,
+                          widget.data[0].thumbnail,
                           fit: BoxFit.cover,
                         ),
                       );
@@ -86,7 +89,7 @@ class _InfoProductState extends State<InfoProduct> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ...List.generate(
-                              widget.data.length,
+                              widget.data[0].images.length,
                               (index) => Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 4),
@@ -128,18 +131,18 @@ class _InfoProductState extends State<InfoProduct> {
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          "Curology",
-                          style: TextStyle(color: Colors.grey),
+                        child: Text(
+                          widget.data[0].category,
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ),
-                      const Row(
+                      Row(
                         children: [
                           Expanded(
                             flex: 1,
                             child: Text(
-                              "Brightening Facial Foam",
-                              style: TextStyle(
+                              widget.data[0].title,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
@@ -147,11 +150,26 @@ class _InfoProductState extends State<InfoProduct> {
                           ),
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              "\$ 32.00",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                              textAlign: TextAlign.end,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "\$ ${((widget.data[0].price) / (1 - widget.data[0].discountPercentage / 100)).toStringAsFixed(2)}",
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "\$ ${widget.data[0].price}",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
                             ),
                           )
                         ],
@@ -340,7 +358,8 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
 }
 
 class PageOneSupport extends StatefulWidget {
-  const PageOneSupport({super.key});
+  final String description;
+  const PageOneSupport({super.key, required this.description});
 
   @override
   State<PageOneSupport> createState() => _PageOneSupportState();
@@ -360,18 +379,18 @@ class _PageOneSupportState extends State<PageOneSupport> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const ReadMoreText(
-          "The Curology cleanser works into a gentle, lightly foaming lather to simply clean your skin, leaving it balanced, hydrated, soft, and refreshed.",
-          style: TextStyle(color: Colors.grey),
+        ReadMoreText(
+          widget.description,
+          style: const TextStyle(color: Colors.grey),
           trimMode: TrimMode.Line,
           trimLines: 3,
           colorClickableText: Colors.black,
           trimCollapsedText: 'Show more',
           trimExpandedText: 'Show less',
-          moreStyle:
-              TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+          moreStyle: const TextStyle(
+              color: Colors.orange, fontWeight: FontWeight.bold),
           lessStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 10,
