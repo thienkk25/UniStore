@@ -178,7 +178,6 @@ class _SigninState extends State<Signin> {
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  // TODO: Lam
                   // if (_keyForm.currentState!.validate()) {
                   //   if (checkboxValue != true) {
                   //     Navigator.of(context).pushAndRemoveUntil(

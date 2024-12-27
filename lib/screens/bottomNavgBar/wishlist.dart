@@ -107,7 +107,9 @@ class _WishlistState extends State<Wishlist> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const InfoProduct(),
+                    builder: (context) => InfoProduct(
+                      data: popularProducts[index],
+                    ),
                   )),
                   child: Card(
                     clipBehavior: Clip.antiAlias,

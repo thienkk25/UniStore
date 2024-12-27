@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
 
 class ViewMore extends StatelessWidget {
   final String textTitileAppbar;
+  // final List<Product> data;
   final List data;
 
   const ViewMore(
@@ -59,11 +59,13 @@ class ViewMore extends StatelessWidget {
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   mainAxisExtent: 220),
-              itemCount: min(data.length, 40),
+              itemCount: data.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const InfoProduct(),
+                    builder: (context) => InfoProduct(
+                      data: [data[index]],
+                    ),
                   )),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
@@ -75,26 +77,46 @@ class ViewMore extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.network(
-                              data[index]['url'],
+                              data[index].thumbnail,
                               height: 100,
                               width: double.infinity,
                               fit: BoxFit.cover,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Text(data[index]['name'],
-                              style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 1),
                           Text(
-                            data[index]['notes'],
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
+                            data[index].title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            "\$ ${data[index]['price'].toString()}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            data[index].description,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "\$ ${((data[index].price) / (1 - data[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    decoration: TextDecoration.lineThrough),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "\$ ${data[index].price}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                         ],
                       ),

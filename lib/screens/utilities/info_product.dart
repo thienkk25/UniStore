@@ -1,21 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:readmore/readmore.dart';
+
 import 'package:shop_fashion/custom/button_view.dart';
+import 'package:shop_fashion/models/product_model.dart';
 
 class InfoProduct extends StatefulWidget {
-  const InfoProduct({super.key});
+  final List<Product> data;
+  const InfoProduct({
+    super.key,
+    required this.data,
+  });
 
   @override
   State<InfoProduct> createState() => _InfoProductState();
 }
 
 class _InfoProductState extends State<InfoProduct> {
-  List<String> imageProduct = [
-    "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016959/flutter/images/pizza_viy2lv.jpg",
-    "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016958/flutter/images/curry_oshkjg.jpg",
-    "https://res.cloudinary.com/dksr7si4o/image/upload/v1733016957/flutter/images/pho_bjsnip.jpg",
-  ];
   int selectedIndexImage = 0;
   List<String> tabSupport = ["Description", "Reviews", "How to use"];
   int selectedIndexSupport = 0;
@@ -46,7 +48,7 @@ class _InfoProductState extends State<InfoProduct> {
                       selectedIndexImage = value;
                     }),
                     controller: pageController,
-                    itemCount: imageProduct.length,
+                    itemCount: widget.data.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onDoubleTap: () {
@@ -55,12 +57,12 @@ class _InfoProductState extends State<InfoProduct> {
                               MaterialPageRoute(
                                 builder: (context) => ImageViewerPage(
                                   initialIndex: index,
-                                  imageProduct: imageProduct,
+                                  imageProduct: widget.data[index].images,
                                 ),
                               ));
                         },
                         child: Image.network(
-                          imageProduct[index],
+                          widget.data[index].thumbnail,
                           fit: BoxFit.cover,
                         ),
                       );
@@ -84,7 +86,7 @@ class _InfoProductState extends State<InfoProduct> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ...List.generate(
-                              imageProduct.length,
+                              widget.data.length,
                               (index) => Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 4),

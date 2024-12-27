@@ -9,7 +9,7 @@ import 'package:shop_fashion/screens/utilities/view_more.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return const ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Profile(),
+        home: Home(),
       ),
     );
   }

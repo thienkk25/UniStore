@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widgets[selectIndex],
+      body: IndexedStack(index: selectIndex, children: widgets),
       bottomNavigationBar: NavigationBar(
         indicatorColor: Colors.amber[50],
         animationDuration: const Duration(milliseconds: 300),
