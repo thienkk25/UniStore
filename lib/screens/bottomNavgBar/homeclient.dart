@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
@@ -350,13 +351,78 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8),
                                     child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedIndexType = index;
-                                          isCheckedFilter = List.generate(
-                                              types.length, (index) => false);
-                                          isFilter = false;
-                                        });
+                                      onTap: () async {
+                                        try {
+                                          if (!mounted) return;
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (context) => const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          );
+                                          final url = Uri.parse(
+                                              "https://dummyjson.com/products/category/${types[index]}");
+                                          final response = await http.get(url);
+                                          if (response.statusCode == 200) {
+                                            final json =
+                                                jsonDecode(response.body);
+
+                                            // Lấy dữ liệu sản phẩm từ API
+                                            List<Product> data =
+                                                List<Product>.from(
+                                              json['products'].map(
+                                                  (e) => Product.fromJson(e)),
+                                            );
+                                            if (!mounted) return;
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.of(context).pop();
+                                            // Sau khi dữ liệu được tải, thực hiện setState và điều hướng
+                                            setState(() {
+                                              selectedIndexType = index;
+                                              isCheckedFilter = List.generate(
+                                                  types.length,
+                                                  (index) => false);
+                                              isFilter = false;
+                                            });
+                                            if (!mounted) return;
+                                            // Điều hướng tới màn hình ViewMore với dữ liệu
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => ViewMore(
+                                                  textTitileAppbar:
+                                                      types[index],
+                                                  data: data,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            if (!mounted) return;
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.of(context).pop();
+                                            // Nếu API không trả về mã 200, thông báo lỗi
+                                            // ignore: use_build_context_synchronously
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Failed to load data: ${response.statusCode}')),
+                                            );
+                                          }
+                                        } catch (e) {
+                                          if (!mounted) return;
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.of(context).pop();
+                                          // Nếu có lỗi xảy ra, hiển thị thông báo lỗi
+                                          // ignore: use_build_context_synchronously
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text('Error: $e')),
+                                          );
+                                        }
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
