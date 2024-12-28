@@ -12,7 +12,7 @@ final isLoadingMoreProvider = StateProvider<bool>((ref) => false);
 
 Future<List<Product>> fetchDataProduct() async {
   try {
-    final url = Uri.parse("https://dummyjson.com/products");
+    final url = Uri.parse("https://dummyjson.com/products?limit=194");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);

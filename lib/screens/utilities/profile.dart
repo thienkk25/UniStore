@@ -42,7 +42,17 @@ class _ProfileState extends State<Profile> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                  ))
+                  )),
+              Positioned(
+                top: 30,
+                left: 10,
+                child: InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 30,
+                    )),
+              ),
             ],
           ),
           const SizedBox(

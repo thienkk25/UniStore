@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shop_fashion/screens/bottomNavgBar/cart.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/explore.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/home.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return const ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Home(),
+        home: Cart(),
       ),
     );
   }

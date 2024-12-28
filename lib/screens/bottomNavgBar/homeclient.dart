@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:math';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
@@ -24,32 +22,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
   ScrollController scrollController = ScrollController();
   int? selectedIndexType;
   bool isFilter = false;
-  List<String> types = [
-    "beauty",
-    "fragrances",
-    "furniture",
-    "groceries",
-    "home-decoration",
-    "kitchen-accessories",
-    "laptops",
-    "mens-shirts",
-    "mens-shoes",
-    "mens-watches",
-    "mobile-accessories",
-    "motorcycle",
-    "skin-care",
-    "smartphones",
-    "sports-accessories",
-    "sunglasses",
-    "tablets",
-    "tops",
-    "vehicle",
-    "womens-bags",
-    "womens-dresses",
-    "womens-jewellery",
-    "womens-shoes",
-    "womens-watches"
-  ];
+  List<String> types = TypesProduct().types;
   late List<bool> isCheckedFilter;
   @override
   void initState() {
@@ -94,7 +67,6 @@ class _HomeclientState extends ConsumerState<Homeclient> {
     final productController = ref.watch(productControllerProvider);
     List<Product> dataProduct = productController.dataAllProductController(ref);
     final dataProductLoad = ref.watch(dataProductProvider);
-
     AsyncValue<List<Product>> specialOfferAsyncValue =
         productController.dataUriProductController(ref,
             "https://dummyjson.com/products?sortBy=discountPercentage&order=desc");
@@ -293,16 +265,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
-
-                                              bool check = isCheckedFilter.any(
-                                                (element) => element == true,
-                                              );
-                                              setState(() {
-                                                check
-                                                    ? isFilter = true
-                                                    : isFilter = false;
-                                              });
+                                              confirmFilter(dataProduct);
                                             },
                                             child: const Text("Confirm"),
                                           ),
@@ -351,78 +314,8 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8),
                                     child: GestureDetector(
-                                      onTap: () async {
-                                        try {
-                                          if (!mounted) return;
-                                          showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (context) => const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          );
-                                          final url = Uri.parse(
-                                              "https://dummyjson.com/products/category/${types[index]}");
-                                          final response = await http.get(url);
-                                          if (response.statusCode == 200) {
-                                            final json =
-                                                jsonDecode(response.body);
-
-                                            // Lấy dữ liệu sản phẩm từ API
-                                            List<Product> data =
-                                                List<Product>.from(
-                                              json['products'].map(
-                                                  (e) => Product.fromJson(e)),
-                                            );
-                                            if (!mounted) return;
-                                            // ignore: use_build_context_synchronously
-                                            Navigator.of(context).pop();
-                                            // Sau khi dữ liệu được tải, thực hiện setState và điều hướng
-                                            setState(() {
-                                              selectedIndexType = index;
-                                              isCheckedFilter = List.generate(
-                                                  types.length,
-                                                  (index) => false);
-                                              isFilter = false;
-                                            });
-                                            if (!mounted) return;
-                                            // Điều hướng tới màn hình ViewMore với dữ liệu
-                                            // ignore: use_build_context_synchronously
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) => ViewMore(
-                                                  textTitileAppbar:
-                                                      types[index],
-                                                  data: data,
-                                                ),
-                                              ),
-                                            );
-                                          } else {
-                                            if (!mounted) return;
-                                            // ignore: use_build_context_synchronously
-                                            Navigator.of(context).pop();
-                                            // Nếu API không trả về mã 200, thông báo lỗi
-                                            // ignore: use_build_context_synchronously
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                      'Failed to load data: ${response.statusCode}')),
-                                            );
-                                          }
-                                        } catch (e) {
-                                          if (!mounted) return;
-                                          // ignore: use_build_context_synchronously
-                                          Navigator.of(context).pop();
-                                          // Nếu có lỗi xảy ra, hiển thị thông báo lỗi
-                                          // ignore: use_build_context_synchronously
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                                content: Text('Error: $e')),
-                                          );
-                                        }
+                                      onTap: () {
+                                        typesPushViewMore(index, dataProduct);
                                       },
                                       child: Container(
                                         alignment: Alignment.center,
@@ -997,5 +890,55 @@ class _HomeclientState extends ConsumerState<Homeclient> {
         : const Center(
             child: CircularProgressIndicator(),
           );
+  }
+
+  void typesPushViewMore(int index, List<Product> dataProduct) {
+    setState(() {
+      selectedIndexType = index;
+      isCheckedFilter = List.generate(types.length, (index) => false);
+      isFilter = false;
+    });
+    List<Product> dataProductFilter = [];
+
+    dataProductFilter = dataProduct
+        .where((element) => element.category == types[index])
+        .toList();
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          ViewMore(textTitileAppbar: types[index], data: dataProductFilter),
+    ));
+  }
+
+  void confirmFilter(List<Product> dataProduct) {
+    bool check = isCheckedFilter.any(
+      (element) => element == true,
+    );
+
+    setState(() {
+      if (check) {
+        Navigator.of(context).pop();
+        isFilter = true;
+        List<Product> dataProductFilter = [];
+
+        dataProductFilter = dataProduct
+            .where((element) => List.generate(isCheckedFilter.length, (index) {
+                  if (isCheckedFilter[index]) {
+                    return types[index];
+                  }
+                  return null; // Return null for unchecked filters
+                })
+                    .where((category) => category != null)
+                    .contains(element.category))
+            .toList();
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              ViewMore(textTitileAppbar: "Filter", data: dataProductFilter),
+        ));
+      } else {
+        isFilter = false;
+      }
+    });
   }
 }
