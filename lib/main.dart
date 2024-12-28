@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return const ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Cart(),
+        home: Home(),
       ),
     );
   }

@@ -337,3 +337,171 @@ class TypesProduct {
           "womens-watches",
         ];
 }
+
+// Giả yourCarts
+class yourCarts {
+  List<Product> dataYourCarts;
+  yourCarts()
+      : dataYourCarts = [
+          Product(
+            id: 1,
+            title: "Essence Mascara Lash Princess 1",
+            description: "A popular mascara known for its volumizing effects.",
+            category: "beauty",
+            price: 9.99,
+            discountPercentage: 7.17,
+            rating: 4.94,
+            stock: 5,
+            tags: ["beauty", "mascara"],
+            brand: "Essence",
+            sku: "RCH45Q1A",
+            weight: 2,
+            dimensions: Dimensions(width: 23.17, height: 14.43, depth: 28.01),
+            warrantyInformation: "1 month warranty",
+            shippingInformation: "Ships in 1 month",
+            availabilityStatus: "Low Stock",
+            reviews: [
+              Review(
+                rating: 5,
+                comment: "Very satisfied!",
+                date: DateTime.parse("2024-05-23T08:56:21.618Z"),
+                reviewerName: "Scarlett Wright",
+                reviewerEmail: "scarlett.wright@x.dummyjson.com",
+              ),
+            ],
+            returnPolicy: "30 days return policy",
+            minimumOrderQuantity: 24,
+            meta: Meta(
+              createdAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              updatedAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              barcode: "9164035109868",
+              qrCode: "https://assets.dummyjson.com/public/qr-code.png",
+            ),
+            images: [
+              "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+            ],
+            thumbnail:
+                "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          ),
+          Product(
+            id: 2,
+            title: "Essence Mascara Lash Princess 2",
+            description: "A popular mascara known for its volumizing effects.",
+            category: "beauty",
+            price: 9.99,
+            discountPercentage: 7.17,
+            rating: 4.94,
+            stock: 5,
+            tags: ["beauty", "mascara"],
+            brand: "Essence",
+            sku: "RCH45Q1A",
+            weight: 2,
+            dimensions: Dimensions(width: 23.17, height: 14.43, depth: 28.01),
+            warrantyInformation: "1 month warranty",
+            shippingInformation: "Ships in 1 month",
+            availabilityStatus: "Low Stock",
+            reviews: [
+              Review(
+                rating: 5,
+                comment: "Very satisfied!",
+                date: DateTime.parse("2024-05-23T08:56:21.618Z"),
+                reviewerName: "Scarlett Wright",
+                reviewerEmail: "scarlett.wright@x.dummyjson.com",
+              ),
+            ],
+            returnPolicy: "30 days return policy",
+            minimumOrderQuantity: 24,
+            meta: Meta(
+              createdAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              updatedAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              barcode: "9164035109868",
+              qrCode: "https://assets.dummyjson.com/public/qr-code.png",
+            ),
+            images: [
+              "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+            ],
+            thumbnail:
+                "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          ),
+          Product(
+            id: 3,
+            title: "Essence Mascara Lash Princess 3",
+            description: "A popular mascara known for its volumizing effects.",
+            category: "beauty",
+            price: 9.99,
+            discountPercentage: 7.17,
+            rating: 4.94,
+            stock: 5,
+            tags: ["beauty", "mascara"],
+            brand: "Essence",
+            sku: "RCH45Q1A",
+            weight: 2,
+            dimensions: Dimensions(width: 23.17, height: 14.43, depth: 28.01),
+            warrantyInformation: "1 month warranty",
+            shippingInformation: "Ships in 1 month",
+            availabilityStatus: "Low Stock",
+            reviews: [
+              Review(
+                rating: 5,
+                comment: "Very satisfied!",
+                date: DateTime.parse("2024-05-23T08:56:21.618Z"),
+                reviewerName: "Scarlett Wright",
+                reviewerEmail: "scarlett.wright@x.dummyjson.com",
+              ),
+            ],
+            returnPolicy: "30 days return policy",
+            minimumOrderQuantity: 24,
+            meta: Meta(
+              createdAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              updatedAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              barcode: "9164035109868",
+              qrCode: "https://assets.dummyjson.com/public/qr-code.png",
+            ),
+            images: [
+              "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+            ],
+            thumbnail:
+                "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          ),
+          Product(
+            id: 4,
+            title: "Essence Mascara Lash Princess 4",
+            description: "A popular mascara known for its volumizing effects.",
+            category: "beauty",
+            price: 9.99,
+            discountPercentage: 7.17,
+            rating: 4.94,
+            stock: 5,
+            tags: ["beauty", "mascara"],
+            brand: "Essence",
+            sku: "RCH45Q1A",
+            weight: 2,
+            dimensions: Dimensions(width: 23.17, height: 14.43, depth: 28.01),
+            warrantyInformation: "1 month warranty",
+            shippingInformation: "Ships in 1 month",
+            availabilityStatus: "Low Stock",
+            reviews: [
+              Review(
+                rating: 5,
+                comment: "Very satisfied!",
+                date: DateTime.parse("2024-05-23T08:56:21.618Z"),
+                reviewerName: "Scarlett Wright",
+                reviewerEmail: "scarlett.wright@x.dummyjson.com",
+              ),
+            ],
+            returnPolicy: "30 days return policy",
+            minimumOrderQuantity: 24,
+            meta: Meta(
+              createdAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              updatedAt: DateTime.parse("2024-05-23T08:56:21.618Z"),
+              barcode: "9164035109868",
+              qrCode: "https://assets.dummyjson.com/public/qr-code.png",
+            ),
+            images: [
+              "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png"
+            ],
+            thumbnail:
+                "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
+          )
+        ];
+}

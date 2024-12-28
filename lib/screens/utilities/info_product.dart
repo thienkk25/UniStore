@@ -366,10 +366,9 @@ class PageOneSupport extends StatefulWidget {
 }
 
 class _PageOneSupportState extends State<PageOneSupport> {
-  TextEditingController quantityController = TextEditingController();
+  TextEditingController quantityController = TextEditingController(text: "1");
   @override
   void initState() {
-    quantityController.text = "1";
     super.initState();
   }
 

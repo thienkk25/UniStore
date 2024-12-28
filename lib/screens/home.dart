@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: NavigationBar(
         indicatorColor: Colors.amber[50],
         animationDuration: const Duration(milliseconds: 300),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         backgroundColor: Colors.black26,
         selectedIndex: selectIndex,
         onDestinationSelected: (value) {
