@@ -66,6 +66,7 @@ class _CartState extends State<Cart> {
                   // A pane can dismiss the Slidable.
                   dismissible: DismissiblePane(onDismissed: () {
                     dataYourCarts.removeAt(index);
+                    checkBoxYourCarts.removeAt(index);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Delete success")));
                   }),
@@ -75,6 +76,7 @@ class _CartState extends State<Cart> {
                         setState(() {
                           if (dataYourCarts.isNotEmpty) {
                             dataYourCarts.removeAt(index);
+                            checkBoxYourCarts.removeAt(index);
                           }
                         });
                         ScaffoldMessenger.of(context).showSnackBar(

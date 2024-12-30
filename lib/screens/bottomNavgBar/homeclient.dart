@@ -458,7 +458,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                             ),
                         error: (error, stackTrace) => const Text("Error"),
                         loading: () => const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: Colors.orange,
+                              ),
                             )),
                     const SizedBox(
                       height: 20,
@@ -580,7 +582,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                         child: Text("Error"),
                       ),
                       loading: () => const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: Colors.orange,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -684,7 +688,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                               child: Text("Error"),
                             ),
                         loading: () => const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: Colors.orange,
+                              ),
                             )),
                     const SizedBox(
                       height: 20,
@@ -699,7 +705,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                     ),
                     ref.watch(isLoadingProvider)
                         ? const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: Colors.orange,
+                            ),
                           )
                         : LayoutBuilder(
                             builder: (context, constraints) {
@@ -879,7 +887,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                         margin: const EdgeInsetsDirectional.only(
                             top: 20, bottom: 20),
                         child: const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: Colors.orange,
+                          ),
                         ),
                       )
                   ],
@@ -888,7 +898,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
             ),
           )
         : const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: Colors.orange,
+            ),
           );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/text_form_field_view.dart';
 import 'package:shop_fashion/screens/signup.dart';
@@ -119,7 +120,7 @@ class _ForgotState extends State<Forgot> {
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  if (_keyForm.currentState!.validate()) {}
+                  forgot();
                 }),
           ),
           Padding(
@@ -149,5 +150,26 @@ class _ForgotState extends State<Forgot> {
         ],
       ),
     );
+  }
+
+  void forgot() async {
+    if (_keyForm.currentState!.validate()) {
+      showDialog(
+        context: context,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(
+            color: Colors.orange,
+          ),
+        ),
+      );
+      final UserController userController = UserController();
+      String result =
+          await userController.forgotController(emailController.text);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+      Navigator.of(context).pop();
+      emailController.clear();
+    }
   }
 }

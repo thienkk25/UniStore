@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/text_form_field_view.dart';
 
@@ -151,10 +153,11 @@ class _SignupState extends State<Signup> {
             height: 40,
             width: 250,
             child: ButtonView(
-                text: "Continue",
-                voidCallback: () {
-                  if (_keyForm.currentState!.validate()) {}
-                }),
+              text: "Continue",
+              voidCallback: () {
+                signOut();
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -197,12 +200,10 @@ class _SignupState extends State<Signup> {
                     left: 40,
                     right: 40,
                   ),
-                  child: const Expanded(
-                    child: Text(
-                      "By continuing your confirm that you agree with our Term and Condition",
-                      style: TextStyle(color: Colors.grey, fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: const Text(
+                    "By continuing your confirm that you agree with our Term and Condition",
+                    style: TextStyle(color: Colors.grey, fontSize: 10),
+                    textAlign: TextAlign.center,
                   ),
                 )
               ],
@@ -211,5 +212,28 @@ class _SignupState extends State<Signup> {
         ],
       ),
     );
+  }
+
+  void signOut() async {
+    if (_keyForm.currentState!.validate()) {
+      showDialog(
+        context: context,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(
+            color: Colors.orange,
+          ),
+        ),
+      );
+      final UserController userController = UserController();
+      String result = await userController.signOutController(
+          emailController.text, pwController.text);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+      emailController.clear();
+      pwController.clear();
+      repwController.clear();
+      Navigator.of(context).pop();
+    }
   }
 }

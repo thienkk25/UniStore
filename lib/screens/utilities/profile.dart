@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_fashion/controllers/user_controller.dart';
+import 'package:shop_fashion/screens/welcome.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -191,7 +193,21 @@ class _ProfileState extends State<Profile> {
           ),
           Card(
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: const Text("You sure logout?"),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("Cancel")),
+                            TextButton(
+                                onPressed: () => logOut(),
+                                child: const Text("Confirm")),
+                          ],
+                        ));
+              },
               child: const ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Log Out"),
@@ -201,5 +217,29 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
+  }
+
+  void logOut() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      ),
+    );
+    final UserController userController = UserController();
+    String result = await userController.logOutController();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+    Navigator.of(context).pop();
+    if (result == "Exit success") {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const Welcome(),
+        ),
+        (route) => false,
+      );
+    }
   }
 }

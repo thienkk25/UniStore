@@ -1,25 +1,24 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shop_fashion/services/riverpod_firebase.dart';
+import 'package:shop_fashion/services/user_firebase.dart';
 
 class UserController {
-  AsyncValue<String> signInController(
-      WidgetRef ref, String email, String password) {
-    final result =
-        ref.watch(signInProvider({email: email, password: password}));
+  final UserFirebase userFirebase = UserFirebase();
+  Future<String> signInController(String email, String password) {
+    final result = userFirebase.signIn(email, password);
     return result;
   }
 
-  AsyncValue<String> signOutController(
-      WidgetRef ref, String email, String password) {
-    final result =
-        ref.watch(signOutProvider({email: email, password: password}));
+  Future<String> signOutController(String email, String password) {
+    final result = userFirebase.signUp(email, password);
     return result;
   }
 
-  AsyncValue<String> logOutController(WidgetRef ref) {
-    final result = ref.watch(logOutProvider);
+  Future<String> forgotController(String email) {
+    final result = userFirebase.forgot(email);
+    return result;
+  }
+
+  Future<String> logOutController() {
+    final result = userFirebase.logOut();
     return result;
   }
 }
-
-final userControllerProvider = Provider((ref) => UserController);

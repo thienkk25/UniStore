@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/text_form_field_view.dart';
 import 'package:shop_fashion/screens/forgot.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/signup.dart';
 
-class Signin extends StatefulWidget {
+class Signin extends ConsumerStatefulWidget {
   const Signin({super.key});
 
   @override
-  State<Signin> createState() => _SigninState();
+  ConsumerState<Signin> createState() => _SigninState();
 }
 
-class _SigninState extends State<Signin> {
+class _SigninState extends ConsumerState<Signin> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwController = TextEditingController();
   // Regular expression for email validation
@@ -178,22 +180,7 @@ class _SigninState extends State<Signin> {
             child: ButtonView(
                 text: "Continue",
                 voidCallback: () {
-                  // if (_keyForm.currentState!.validate()) {
-                  //   if (checkboxValue != true) {
-                  //     Navigator.of(context).pushAndRemoveUntil(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const Home(),
-                  //       ),
-                  //       (route) => false,
-                  //     );
-                  //   }
-                  // }
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const Home(),
-                    ),
-                    (route) => false,
-                  );
+                  signIn();
                 }),
           ),
           Padding(
@@ -259,5 +246,33 @@ class _SigninState extends State<Signin> {
         ],
       ),
     );
+  }
+
+  void signIn() async {
+    if (_keyForm.currentState!.validate()) {
+      showDialog(
+        context: context,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(
+            color: Colors.orange,
+          ),
+        ),
+      );
+      final UserController userController = UserController();
+      String result = await userController.signInController(
+          emailController.text, pwController.text);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result)));
+      Navigator.of(context).pop();
+      if (result == "Login success") {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const Home(),
+          ),
+          (route) => false,
+        );
+      }
+    }
   }
 }
