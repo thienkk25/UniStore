@@ -338,10 +338,10 @@ class TypesProduct {
         ];
 }
 
-// Giả yourCarts
-class yourCarts {
+// Giả YourCarts
+class YourCarts {
   List<Product> dataYourCarts;
-  yourCarts()
+  YourCarts()
       : dataYourCarts = [
           Product(
             id: 1,

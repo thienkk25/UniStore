@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/services/riverpod.dart';
+import 'package:shop_fashion/services/riverpod_product.dart';
 
 class ProductController {
   // Phương thức này sử dụng `WidgetRef` để lấy dữ liệu từ `dataAllProductProvider`

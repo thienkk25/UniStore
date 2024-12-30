@@ -7,7 +7,7 @@ import 'package:shop_fashion/screens/utilities/info_product.dart';
 import 'package:shop_fashion/screens/utilities/notify.dart';
 import 'package:shop_fashion/screens/utilities/profile.dart';
 import 'package:shop_fashion/screens/utilities/view_more.dart';
-import 'package:shop_fashion/services/riverpod.dart';
+import 'package:shop_fashion/services/riverpod_product.dart';
 
 class Homeclient extends ConsumerStatefulWidget {
   const Homeclient({super.key});
