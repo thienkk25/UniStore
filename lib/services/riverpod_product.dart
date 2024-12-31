@@ -2,6 +2,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:http/http.dart' as http;
@@ -118,3 +121,107 @@ final dataUriProductProvider =
     FutureProvider.family<List<Product>, String>((ref, uri) async {
   return await fetchDataProductUrl(uri);
 });
+
+Stream<List<dynamic>> fetchCartProduct() {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+
+  return firestore
+      .collection("userCarts")
+      .doc(auth.currentUser!.uid)
+      .snapshots()
+      .map((cartDoc) {
+    if (cartDoc.exists) {
+      return List.from(cartDoc.data()!['products']);
+    } else {
+      return [];
+    }
+  });
+}
+
+Future<String> addCartProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+
+  try {
+    String userId = auth.currentUser!.uid;
+
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userCarts").doc(userId).get();
+
+    if (cartDoc.exists) {
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+
+      bool productExists = products.any((product) => product['id'] == id);
+
+      if (productExists) {
+        return "Product already in the cart";
+      } else {
+        await firestore.collection("userCarts").doc(userId).update({
+          'products': FieldValue.arrayUnion([
+            {
+              'id': id,
+              'createAt': DateTime.now().toIso8601String(),
+            }
+          ])
+        });
+        return "Add Success";
+      }
+    } else {
+      // Nếu giỏ hàng chưa tồn tại, tạo mới giỏ hàng với sản phẩm
+      await firestore.collection("userCarts").doc(userId).set({
+        'uid': userId,
+        'products': [
+          {
+            'id': id,
+            'createAt': DateTime.now().toIso8601String(),
+          }
+        ]
+      });
+      return "Add Success";
+    }
+  } catch (e) {
+    return e.toString();
+  }
+}
+
+Future<String> deleteCartProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+
+  try {
+    String userId = auth.currentUser!.uid;
+
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userCarts").doc(userId).get();
+
+    if (cartDoc.exists) {
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+
+      bool productExists = products.any((product) => product['id'] == id);
+
+      if (productExists) {
+        products.removeWhere((product) => product['id'] == id);
+        await firestore
+            .collection("userCarts")
+            .doc(userId)
+            .update({'products': products});
+
+        return "Delete Success";
+      } else {
+        return "Product not found in cart";
+      }
+    } else {
+      return "Cart not found";
+    }
+  } catch (e) {
+    return e.toString();
+  }
+}
+
+final dataYourCartsProvider = StateProvider<List<Product>>((ref) => []);
+final checkBoxYourCartsProvider = StateProvider<List<bool>>((ref) => []);
+final textEditingControllerYourCartsProvider =
+    StateProvider<List<TextEditingController>>((ref) => []);

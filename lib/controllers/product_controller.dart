@@ -27,6 +27,14 @@ class ProductController {
   void loadMoreProductController(WidgetRef ref) {
     loadMoreProduct(ref);
   }
+
+  Future<String> addCartProductController(int id) async {
+    return await addCartProduct(id);
+  }
+
+  Future<String> deleteCartProductController(int id) async {
+    return await deleteCartProduct(id);
+  }
 }
 
 final productControllerProvider = Provider((ref) => ProductController());

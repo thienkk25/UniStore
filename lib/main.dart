@@ -15,6 +15,7 @@ import 'package:shop_fashion/screens/utilities/view_more.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,19 +30,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late bool statusUser;
+  late bool sessionUser;
   @override
   void initState() {
-    checkStatusUser();
+    checksessionUser();
     super.initState();
   }
 
-  void checkStatusUser() {
+  void checksessionUser() {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      statusUser = true;
+      sessionUser = true;
     } else {
-      statusUser = false;
+      sessionUser = false;
     }
   }
 
@@ -50,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     return ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: statusUser ? const Home() : const Welcome(),
+        home: sessionUser ? const Home() : const Welcome(),
       ),
     );
   }

@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shop_fashion/controllers/product_controller.dart';
 
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
+import 'package:shop_fashion/services/riverpod_product.dart';
 
-class InfoProduct extends StatefulWidget {
+class InfoProduct extends ConsumerStatefulWidget {
   final Product data;
   const InfoProduct({
     super.key,
@@ -14,10 +17,10 @@ class InfoProduct extends StatefulWidget {
   });
 
   @override
-  State<InfoProduct> createState() => _InfoProductState();
+  ConsumerState<InfoProduct> createState() => _InfoProductState();
 }
 
-class _InfoProductState extends State<InfoProduct> {
+class _InfoProductState extends ConsumerState<InfoProduct> {
   int selectedIndexImage = 0;
   List<String> tabSupport = ["Description", "Reviews", "Policy"];
   int selectedIndexSupport = 0;
@@ -249,7 +252,9 @@ class _InfoProductState extends State<InfoProduct> {
                 height: 40,
                 width: 150,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    addToCart();
+                  },
                   child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
@@ -284,6 +289,24 @@ class _InfoProductState extends State<InfoProduct> {
         ),
       ),
     );
+  }
+
+  Future<void> addToCart() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      ),
+    );
+    final result = await ref
+        .watch(productControllerProvider)
+        .addCartProductController(widget.data.id);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
   }
 }
 
