@@ -19,6 +19,7 @@ class Wishlist extends ConsumerWidget {
     List<Product> dataProduct = productController.dataAllProductController(ref);
     AsyncValue<List> favoriteProductsAsyncValue =
         productController.fetchFavoriteProductController(ref);
+    List<Product> popularProducts = [];
     return Scaffold(
         body: Column(
       children: [
@@ -51,7 +52,7 @@ class Wishlist extends ConsumerWidget {
               searchController: searchController,
               suggestionsBuilder: (context, controller) {
                 final String data = controller.text.toLowerCase();
-                List<String> searchList = dataProduct
+                List<String> searchList = popularProducts
                     .map(
                       (e) => e.title,
                     )
@@ -64,7 +65,7 @@ class Wishlist extends ConsumerWidget {
                               onTap: () =>
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InfoProduct(
-                                            data: dataProduct[index],
+                                            data: popularProducts[index],
                                           ))),
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -74,7 +75,7 @@ class Wishlist extends ConsumerWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
                                     leading: Image.network(
-                                      dataProduct[index].thumbnail,
+                                      popularProducts[index].thumbnail,
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -89,7 +90,7 @@ class Wishlist extends ConsumerWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              "\$ ${((dataProduct[index].price) / (1 - dataProduct[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                              "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
@@ -99,7 +100,7 @@ class Wishlist extends ConsumerWidget {
                                               width: 5,
                                             ),
                                             Text(
-                                              "\$ ${dataProduct[index].price}",
+                                              "\$ ${popularProducts[index].price}",
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -125,7 +126,7 @@ class Wishlist extends ConsumerWidget {
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: favoriteProductsAsyncValue.when(
               data: (data) {
-                List<Product> popularProducts = dataProduct
+                popularProducts = dataProduct
                     .where((element) =>
                         data.any((product) => product['id'] == element.id))
                     .toList();
