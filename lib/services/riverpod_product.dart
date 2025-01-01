@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 final currentPageProductProvider = StateProvider<int>((ref) => 0);
 final isLoadingProvider = StateProvider<bool>((ref) => false);
 final isLoadingMoreProvider = StateProvider<bool>((ref) => false);
+final firestore = FirebaseFirestore.instance;
+final auth = FirebaseAuth.instance;
 
 Future<List<Product>> fetchDataProduct() async {
   try {
@@ -123,9 +125,6 @@ final dataUriProductProvider =
 });
 
 Stream<List<dynamic>> fetchCartProduct() {
-  final firestore = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
-
   return firestore
       .collection("userCarts")
       .doc(auth.currentUser!.uid)
@@ -140,9 +139,6 @@ Stream<List<dynamic>> fetchCartProduct() {
 }
 
 Future<String> addCartProduct(int id) async {
-  final firestore = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
-
   try {
     String userId = auth.currentUser!.uid;
 
@@ -187,9 +183,6 @@ Future<String> addCartProduct(int id) async {
 }
 
 Future<String> deleteCartProduct(int id) async {
-  final firestore = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
-
   try {
     String userId = auth.currentUser!.uid;
 
@@ -229,10 +222,27 @@ final subTotalProductProvider = StateProvider<double>((ref) => 0);
 final discountProductProvider = StateProvider<double>((ref) => 0);
 final totalProductProvider = StateProvider<double>((ref) => 0);
 
-Future<String> addFavoriteProduct(int id) async {
-  final firestore = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
+Future<List> fetchFavoriteProduct() async {
+  try {
+    String userId = auth.currentUser!.uid;
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userFavorites").doc(userId).get();
+    if (cartDoc.exists) {
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+      return products;
+    } else {
+      return [];
+    }
+  } catch (e) {
+    return [];
+  }
+}
 
+final fetchFavoriteProductProvider =
+    FutureProvider<List>((ref) async => await fetchFavoriteProduct());
+
+Future<String> addFavoriteProduct(int id) async {
   try {
     String userId = auth.currentUser!.uid;
 
@@ -259,7 +269,7 @@ Future<String> addFavoriteProduct(int id) async {
         return "Favorite Success";
       }
     } else {
-      await firestore.collection("userPopulars").doc(userId).set({
+      await firestore.collection("userFavorites").doc(userId).set({
         'uid': userId,
         'products': [
           {
@@ -276,9 +286,6 @@ Future<String> addFavoriteProduct(int id) async {
 }
 
 Future<String> deleteFavoriteProduct(int id) async {
-  final firestore = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
-
   try {
     String userId = auth.currentUser!.uid;
 

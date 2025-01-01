@@ -34,6 +34,10 @@ class ProductController {
     return await deleteCartProduct(id);
   }
 
+  AsyncValue<List> fetchFavoriteProductController(WidgetRef ref) {
+    return ref.watch(fetchFavoriteProductProvider);
+  }
+
   Future<String> addFavoriteProductController(int id) async {
     return await addFavoriteProduct(id);
   }

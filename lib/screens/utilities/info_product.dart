@@ -7,7 +7,6 @@ import 'package:shop_fashion/controllers/product_controller.dart';
 
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
 
 class InfoProduct extends ConsumerStatefulWidget {
   final Product data;

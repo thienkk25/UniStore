@@ -17,20 +17,23 @@ class Cart extends ConsumerStatefulWidget {
 }
 
 class _CartState extends ConsumerState<Cart> {
+  late List<Product> dataYourCarts;
   @override
   Widget build(BuildContext context) {
     final productController = ref.watch(productControllerProvider);
     final dataProduct = productController.dataAllProductController(ref);
-
+    dataYourCarts = ref.read(dataYourCartsProvider);
     return StreamBuilder(
       stream: fetchCartProduct(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(
-            color: Colors.orange,
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
+            ),
           );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           List<Product> dataTemporary = dataProduct
               .where((element) =>
@@ -55,6 +58,7 @@ class _CartState extends ConsumerState<Cart> {
               }
             }
             sumTotalProduct();
+            dataYourCarts = ref.read(dataYourCartsProvider);
           });
           return Scaffold(
             appBar: AppBar(
@@ -71,24 +75,18 @@ class _CartState extends ConsumerState<Cart> {
                         return Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Slidable(
-                            key: Key(ref
-                                .read(dataYourCartsProvider)[index]
-                                .id
-                                .toString()),
+                            key: Key(dataYourCarts[index].id.toString()),
                             endActionPane: ActionPane(
                               motion: const ScrollMotion(),
                               // A pane can dismiss the Slidable.
                               dismissible:
                                   DismissiblePane(onDismissed: () async {
-                                deleteCart(
-                                    ref.read(dataYourCartsProvider)[index].id);
+                                deleteCart(dataYourCarts[index].id);
                               }),
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
-                                    deleteCart(ref
-                                        .read(dataYourCartsProvider)[index]
-                                        .id);
+                                    deleteCart(dataYourCarts[index].id);
                                   },
                                   backgroundColor: const Color(0xFFFE4A49),
                                   foregroundColor: Colors.white,
@@ -463,12 +461,9 @@ class _CartState extends ConsumerState<Cart> {
         ),
       ),
     );
-    ref.read(dataYourCartsProvider.notifier).state = ref
-        .watch(dataYourCartsProvider)
-        .where((item) => item.id != id)
-        .toList();
+    dataYourCarts.removeWhere((e) => e.id == id);
 
-    final result = await ref
+    String result = await ref
         .watch(productControllerProvider)
         .deleteCartProductController(id);
     if (!mounted) return;
