@@ -225,3 +225,87 @@ final dataYourCartsProvider = StateProvider<List<Product>>((ref) => []);
 final checkBoxYourCartsProvider = StateProvider<List<bool>>((ref) => []);
 final textEditingControllerYourCartsProvider =
     StateProvider<List<TextEditingController>>((ref) => []);
+final subTotalProductProvider = StateProvider<double>((ref) => 0);
+final discountProductProvider = StateProvider<double>((ref) => 0);
+final totalProductProvider = StateProvider<double>((ref) => 0);
+
+Future<String> addFavoriteProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+
+  try {
+    String userId = auth.currentUser!.uid;
+
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userFavorites").doc(userId).get();
+
+    if (cartDoc.exists) {
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+
+      bool productExists = products.any((product) => product['id'] == id);
+
+      if (productExists) {
+        return "Favorite already in the data";
+      } else {
+        await firestore.collection("userFavorites").doc(userId).update({
+          'products': FieldValue.arrayUnion([
+            {
+              'id': id,
+              'createAt': DateTime.now().toIso8601String(),
+            }
+          ])
+        });
+        return "Favorite Success";
+      }
+    } else {
+      await firestore.collection("userPopulars").doc(userId).set({
+        'uid': userId,
+        'products': [
+          {
+            'id': id,
+            'createAt': DateTime.now().toIso8601String(),
+          }
+        ]
+      });
+      return "Favorite Success";
+    }
+  } catch (e) {
+    return e.toString();
+  }
+}
+
+Future<String> deleteFavoriteProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+
+  try {
+    String userId = auth.currentUser!.uid;
+
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userFavorites").doc(userId).get();
+
+    if (cartDoc.exists) {
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+
+      bool productExists = products.any((product) => product['id'] == id);
+
+      if (productExists) {
+        products.removeWhere((product) => product['id'] == id);
+        await firestore
+            .collection("userFavorites")
+            .doc(userId)
+            .update({'products': products});
+
+        return "Unfavorite Success";
+      } else {
+        return "Favorite not found in data";
+      }
+    } else {
+      return "Favorite not found";
+    }
+  } catch (e) {
+    return e.toString();
+  }
+}

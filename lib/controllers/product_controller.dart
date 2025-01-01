@@ -3,15 +3,13 @@ import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
 class ProductController {
-  // Phương thức này sử dụng `WidgetRef` để lấy dữ liệu từ `dataAllProductProvider`
   List<Product> dataAllProductController(WidgetRef ref) {
-    // Watch the FutureProvider for data and handle loading state properly.
     final productAsyncValue = ref.watch(dataAllProductProvider);
 
     return productAsyncValue.when(
-      data: (products) => products, // Khi có dữ liệu, trả về danh sách sản phẩm
-      loading: () => [], // Trả về danh sách rỗng khi đang tải dữ liệu
-      error: (error, stack) => [], // Trả về danh sách rỗng nếu có lỗi
+      data: (products) => products,
+      loading: () => [],
+      error: (error, stack) => [],
     );
   }
 
@@ -34,6 +32,14 @@ class ProductController {
 
   Future<String> deleteCartProductController(int id) async {
     return await deleteCartProduct(id);
+  }
+
+  Future<String> addFavoriteProductController(int id) async {
+    return await addFavoriteProduct(id);
+  }
+
+  Future<String> deleteFavoriteProductController(int id) async {
+    return await deleteFavoriteProduct(id);
   }
 }
 

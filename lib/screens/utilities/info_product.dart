@@ -122,9 +122,14 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.orange, width: 1)),
-                        child: const Icon(
-                          Icons.favorite_border_outlined,
-                          color: Colors.orange,
+                        child: InkWell(
+                          onTap: () {
+                            addFavorite();
+                          },
+                          child: const Icon(
+                            Icons.favorite_border_outlined,
+                            color: Colors.orange,
+                          ),
                         )),
                   ],
                 ),
@@ -235,12 +240,9 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.orangeAccent
-            ], // Gradient từ đỏ sang xanh
-            begin: Alignment.centerLeft, // Bắt đầu từ bên trái
-            end: Alignment.centerRight, // Kết thúc ở bên phải
+            colors: [Colors.white, Colors.orangeAccent],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
         ),
         child: SizedBox(
@@ -304,6 +306,23 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
         .watch(productControllerProvider)
         .addCartProductController(widget.data.id);
 
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+  }
+
+  Future<void> addFavorite() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      ),
+    );
+    final result = await ref
+        .watch(productControllerProvider)
+        .addFavoriteProductController(widget.data.id);
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
