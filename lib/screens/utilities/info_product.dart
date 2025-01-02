@@ -302,6 +302,13 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
         ),
       ),
     );
+    ref
+        .read(cartProductNotifierProvider.notifier)
+        .addStateCartProduct(widget.data);
+    ref
+        .read(textEditingControllerYourCartsProvider.notifier)
+        .addStateTextEditingControllerYourCarts();
+    ref.read(checkBoxYourCartsProvider.notifier).addStatecheckBoxYourCarts();
     final result = await ref
         .watch(productControllerProvider)
         .addCartProductController(widget.data.id);

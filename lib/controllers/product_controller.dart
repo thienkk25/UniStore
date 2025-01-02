@@ -26,6 +26,17 @@ class ProductController {
     loadMoreProduct(ref);
   }
 
+  Future<void> fetchCartProductController(WidgetRef ref) async {
+    List<Product> dataProduct = await fetchDataProduct();
+    final productValue = await fetchCartProduct();
+
+    List<Product> data = dataProduct
+        .where((element) =>
+            productValue.any((product) => product['id'] == element.id))
+        .toList();
+    ref.read(cartProductNotifierProvider.notifier).setStateCartProduct(data);
+  }
+
   Future<String> addCartProductController(int id) async {
     return await addCartProduct(id);
   }
@@ -43,6 +54,12 @@ class ProductController {
             productValue.any((product) => product['id'] == element.id))
         .toList();
     ref.read(favoriteProductNotifierProvider.notifier).setStateFavorite(data);
+    ref
+        .read(checkBoxYourCartsProvider.notifier)
+        .setStatecheckBoxYourCarts(data.length);
+    ref
+        .read(textEditingControllerYourCartsProvider.notifier)
+        .setStateTextEditingControllerYourCarts(data.length);
   }
 
   Future<String> addFavoriteProductController(int id) async {

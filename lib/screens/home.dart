@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/Cart.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/Explore.dart';
+import 'package:shop_fashion/screens/bottomNavgBar/explore_view.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/wishlist.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
 
-class Home extends ConsumerStatefulWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
-  ConsumerState<Home> createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends ConsumerState<Home> {
+class _HomeState extends State<Home> {
   int selectIndex = 0;
   final List<Widget> widgets = [
     const Homeclient(),
-    const Explore(),
+    const ExploreView(),
     const Cart(),
     const Wishlist()
   ];

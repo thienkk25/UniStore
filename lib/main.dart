@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shop_fashion/firebase_options.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/cart.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/explore.dart';
+import 'package:shop_fashion/screens/bottomNavgBar/explore_view.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/signin.dart';

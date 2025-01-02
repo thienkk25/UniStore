@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Explore extends StatefulWidget {
-  const Explore({super.key});
+class ExploreView extends StatefulWidget {
+  const ExploreView({super.key});
 
   @override
-  State<Explore> createState() => _ExploreState();
+  State<ExploreView> createState() => _ExploreViewState();
 }
 
-class _ExploreState extends State<Explore> {
+class _ExploreViewState extends State<ExploreView> {
   TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {

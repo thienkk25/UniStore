@@ -124,19 +124,46 @@ final dataUriProductProvider =
   return await fetchDataProductUrl(uri);
 });
 
-Stream<List<dynamic>> fetchCartProduct() {
-  return firestore
-      .collection("userCarts")
-      .doc(auth.currentUser!.uid)
-      .snapshots()
-      .map((cartDoc) {
+Future<List> fetchCartProduct() async {
+  try {
+    String userId = auth.currentUser!.uid;
+    DocumentSnapshot cartDoc =
+        await firestore.collection("userCarts").doc(userId).get();
     if (cartDoc.exists) {
-      return List.from(cartDoc.data()!['products']);
+      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
+      List<dynamic> products = cartData['products'] ?? [];
+      return products;
     } else {
       return [];
     }
-  });
+  } catch (e) {
+    return [];
+  }
 }
+
+class CartProductNotifier extends StateNotifier<List<Product>> {
+  CartProductNotifier() : super([]);
+
+  setStateCartProduct(List<Product> products) {
+    state = products;
+  }
+
+  addStateCartProduct(Product product) {
+    if (!state.contains(product)) {
+      state = [...state, product];
+    }
+  }
+
+  removeStateCartProduct(Product product) {
+    if (!state.contains(product)) {
+      state = state.where((e) => e.id != product.id).toList();
+    }
+  }
+}
+
+final cartProductNotifierProvider =
+    StateNotifierProvider<CartProductNotifier, List<Product>>(
+        (ref) => CartProductNotifier());
 
 Future<String> addCartProduct(int id) async {
   try {
@@ -214,13 +241,73 @@ Future<String> deleteCartProduct(int id) async {
   }
 }
 
-final dataYourCartsProvider = StateProvider<List<Product>>((ref) => []);
-final checkBoxYourCartsProvider = StateProvider<List<bool>>((ref) => []);
-final textEditingControllerYourCartsProvider =
-    StateProvider<List<TextEditingController>>((ref) => []);
-final subTotalProductProvider = StateProvider<double>((ref) => 0);
-final discountProductProvider = StateProvider<double>((ref) => 0);
-final totalProductProvider = StateProvider<double>((ref) => 0);
+class CheckBoxYourCartsNotifier extends StateNotifier<List<bool>> {
+  CheckBoxYourCartsNotifier() : super([]);
+  setStatecheckBoxYourCarts(int length) {
+    state = List.generate(length, (index) => true);
+  }
+
+  addStatecheckBoxYourCarts() {
+    state = [...state, true];
+  }
+
+  removeStatecheckBoxYourCarts(int index) {
+    if (index >= 0 && index < state.length) {
+      state = List.from(state)..removeAt(index);
+    }
+  }
+
+  void toggleStateCheckBoxYourCarts(int index) {
+    if (index >= 0 && index < state.length) {
+      final updatedState = List<bool>.from(state);
+      updatedState[index] = !updatedState[index];
+      state = updatedState;
+    }
+  }
+}
+
+final checkBoxYourCartsProvider =
+    StateNotifierProvider<CheckBoxYourCartsNotifier, List<bool>>(
+        (ref) => CheckBoxYourCartsNotifier());
+
+class TextEditingControllerYourCarts
+    extends StateNotifier<List<TextEditingController>> {
+  TextEditingControllerYourCarts() : super([]);
+  setStateTextEditingControllerYourCarts(int length) {
+    state = List.generate(length, (index) => TextEditingController(text: "1"));
+  }
+
+  addStateTextEditingControllerYourCarts() {
+    state = [...state, TextEditingController(text: "1")];
+  }
+
+  removeStateTextEditingControllerYourCarts(int index) {
+    if (index >= 0 && index < state.length) {
+      state[index].dispose();
+      state = List.from(state)..removeAt(index);
+    }
+  }
+
+  void incrementValue(int index) {
+    if (index >= 0 && index < state.length) {
+      final controller = state[index];
+      final currentValue = int.tryParse(controller.text) ?? 0;
+      controller.text = (currentValue + 1).toString();
+    }
+  }
+
+  void decrementValue(int index) {
+    if (index >= 0 && index < state.length) {
+      final controller = state[index];
+      final currentValue = int.tryParse(controller.text) ?? 0;
+      controller.text = (currentValue - 1).toString();
+    }
+  }
+}
+
+final textEditingControllerYourCartsProvider = StateNotifierProvider<
+    TextEditingControllerYourCarts,
+    List<TextEditingController>>((ref) => TextEditingControllerYourCarts());
 
 Future<List> fetchFavoriteProduct() async {
   try {
@@ -238,9 +325,6 @@ Future<List> fetchFavoriteProduct() async {
     return [];
   }
 }
-
-final fetchFavoriteProductProvider =
-    FutureProvider<List>((ref) async => await fetchFavoriteProduct());
 
 class FavoriteProductNotifier extends StateNotifier<List<Product>> {
   FavoriteProductNotifier() : super([]);

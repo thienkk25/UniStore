@@ -32,9 +32,6 @@ class _HomeclientState extends ConsumerState<Homeclient> {
       });
     });
     isCheckedFilter = List.generate(types.length, (index) => false);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   fetchDataProduct();
-    // });
     Future.microtask(() => fetchDataProduct());
     scrollController.addListener(() async {
       if (scrollController.position.pixels ==
