@@ -68,11 +68,17 @@ class _CartState extends ConsumerState<Cart> {
                             // A pane can dismiss the Slidable.
                             dismissible: DismissiblePane(onDismissed: () async {
                               deleteCart(dataYourCarts[index].id, index);
+                              setState(() {
+                                sumTotalProduct();
+                              });
                             }),
                             children: [
                               SlidableAction(
                                 onPressed: (context) {
                                   deleteCart(dataYourCarts[index].id, index);
+                                  setState(() {
+                                    sumTotalProduct();
+                                  });
                                 },
                                 backgroundColor: const Color(0xFFFE4A49),
                                 foregroundColor: Colors.white,
@@ -188,6 +194,11 @@ class _CartState extends ConsumerState<Cart> {
                                                   height: 20,
                                                   width: 40,
                                                   child: TextField(
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        sumTotalProduct();
+                                                      });
+                                                    },
                                                     controller:
                                                         textEditingControllerYourCarts[
                                                             index],
