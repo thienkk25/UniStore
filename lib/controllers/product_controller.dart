@@ -34,8 +34,15 @@ class ProductController {
     return await deleteCartProduct(id);
   }
 
-  AsyncValue<List> fetchFavoriteProductController(WidgetRef ref) {
-    return ref.watch(fetchFavoriteProductProvider);
+  Future<void> fetchFavoriteProductController(WidgetRef ref) async {
+    List<Product> dataProduct = await fetchDataProduct();
+    final productValue = await fetchFavoriteProduct();
+
+    List<Product> data = dataProduct
+        .where((element) =>
+            productValue.any((product) => product['id'] == element.id))
+        .toList();
+    ref.read(favoriteProductNotifierProvider.notifier).setStateFavorite(data);
   }
 
   Future<String> addFavoriteProductController(int id) async {

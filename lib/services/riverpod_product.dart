@@ -242,6 +242,30 @@ Future<List> fetchFavoriteProduct() async {
 final fetchFavoriteProductProvider =
     FutureProvider<List>((ref) async => await fetchFavoriteProduct());
 
+class FavoriteProductNotifier extends StateNotifier<List<Product>> {
+  FavoriteProductNotifier() : super([]);
+
+  setStateFavorite(List<Product> products) {
+    state = products;
+  }
+
+  addStateFavorite(Product product) {
+    if (!state.contains(product)) {
+      state = [...state, product];
+    }
+  }
+
+  removeStateFavorite(Product product) {
+    if (!state.contains(product)) {
+      state = state.where((e) => e.id != product.id).toList();
+    }
+  }
+}
+
+final favoriteProductNotifierProvider =
+    StateNotifierProvider<FavoriteProductNotifier, List<Product>>(
+        (ref) => FavoriteProductNotifier());
+
 Future<String> addFavoriteProduct(int id) async {
   try {
     String userId = auth.currentUser!.uid;
@@ -316,3 +340,7 @@ Future<String> deleteFavoriteProduct(int id) async {
     return e.toString();
   }
 }
+
+final testProvider = StateProvider(
+  (ref) => 0,
+);
