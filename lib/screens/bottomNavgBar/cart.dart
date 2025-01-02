@@ -25,14 +25,10 @@ class _CartState extends ConsumerState<Cart> {
   double totalProduct = 0;
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        isDelayed = true;
-      });
-    });
     Future.microtask(() {
       ref.read(productControllerProvider).fetchCartProductController(ref);
     });
+
     super.initState();
   }
 
@@ -45,6 +41,11 @@ class _CartState extends ConsumerState<Cart> {
     if (dataYourCarts.isNotEmpty &&
         checkBoxYourCarts.isNotEmpty &&
         textEditingControllerYourCarts.isNotEmpty) {
+      Future.delayed(const Duration(seconds: 1), () {
+        setState(() {
+          isDelayed = true;
+        });
+      });
       sumTotalProduct();
     }
     return isDelayed
@@ -436,8 +437,13 @@ class _CartState extends ConsumerState<Cart> {
 
   void sumTotalProduct() {
     subTotalProduct = dataYourCarts.fold(0, (sum, item) {
-      int quanlity = int.parse(
-          textEditingControllerYourCarts[dataYourCarts.indexOf(item)].text);
+      int quanlity = 0;
+      if (textEditingControllerYourCarts[dataYourCarts.indexOf(item)]
+          .text
+          .isNotEmpty) {
+        quanlity = int.parse(
+            textEditingControllerYourCarts[dataYourCarts.indexOf(item)].text);
+      }
       double index = checkBoxYourCarts[dataYourCarts.indexOf(item)]
           ? quanlity * item.price
           : 0;
