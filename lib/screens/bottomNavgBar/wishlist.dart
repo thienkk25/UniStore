@@ -14,7 +14,7 @@ class Wishlist extends ConsumerStatefulWidget {
 }
 
 class _Whilist extends ConsumerState<Wishlist> {
-  late List<Product> popularProducts;
+  late List<Product> favoriteProducts;
   @override
   void initState() {
     Future.microtask(() {
@@ -30,7 +30,7 @@ class _Whilist extends ConsumerState<Wishlist> {
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
 
-    popularProducts = ref.watch(favoriteProductNotifierProvider);
+    favoriteProducts = ref.watch(favoriteProductNotifierProvider);
 
     return Scaffold(
         body: Column(
@@ -64,7 +64,7 @@ class _Whilist extends ConsumerState<Wishlist> {
               searchController: searchController,
               suggestionsBuilder: (context, controller) {
                 final String data = controller.text.toLowerCase();
-                List<String> searchList = popularProducts
+                List<String> searchList = favoriteProducts
                     .map(
                       (e) => e.title,
                     )
@@ -77,7 +77,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                               onTap: () =>
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InfoProduct(
-                                            data: popularProducts[index],
+                                            data: favoriteProducts[index],
                                           ))),
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -87,7 +87,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
                                     leading: Image.network(
-                                      popularProducts[index].thumbnail,
+                                      favoriteProducts[index].thumbnail,
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -102,7 +102,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                         Row(
                                           children: [
                                             Text(
-                                              "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                              "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
@@ -112,7 +112,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                               width: 5,
                                             ),
                                             Text(
-                                              "\$ ${popularProducts[index].price}",
+                                              "\$ ${favoriteProducts[index].price}",
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -146,15 +146,15 @@ class _Whilist extends ConsumerState<Wishlist> {
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                             mainAxisExtent: 220),
-                    itemCount: popularProducts.length,
+                    itemCount: favoriteProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          //   Navigator.of(context).push(MaterialPageRoute(
-                          //   builder: (context) => InfoProduct(
-                          //     data: popularProducts[index],
-                          //   ),
-                          // ));
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => InfoProduct(
+                              data: favoriteProducts[index],
+                            ),
+                          ));
                         },
                         child: Card(
                           clipBehavior: Clip.antiAlias,
@@ -166,7 +166,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    popularProducts[index].thumbnail,
+                                    favoriteProducts[index].thumbnail,
                                     height: 100,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -174,14 +174,14 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  popularProducts[index].title,
+                                  favoriteProducts[index].title,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  popularProducts[index].description,
+                                  favoriteProducts[index].description,
                                   style: const TextStyle(
                                       fontSize: 12, color: Colors.grey),
                                   maxLines: 1,
@@ -190,7 +190,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 Row(
                                   children: [
                                     Text(
-                                      "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                      "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                       style: const TextStyle(
                                           color: Colors.grey,
                                           decoration:
@@ -200,7 +200,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       width: 5,
                                     ),
                                     Text(
-                                      "\$ ${popularProducts[index].price}",
+                                      "\$ ${favoriteProducts[index].price}",
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -221,13 +221,13 @@ class _Whilist extends ConsumerState<Wishlist> {
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                             mainAxisExtent: 220),
-                    itemCount: popularProducts.length,
+                    itemCount: favoriteProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () =>
                             Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => InfoProduct(
-                            data: popularProducts[index],
+                            data: favoriteProducts[index],
                           ),
                         )),
                         child: Card(
@@ -240,7 +240,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    popularProducts[index].thumbnail,
+                                    favoriteProducts[index].thumbnail,
                                     height: 100,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -248,14 +248,14 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  popularProducts[index].title,
+                                  favoriteProducts[index].title,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  popularProducts[index].description,
+                                  favoriteProducts[index].description,
                                   style: const TextStyle(
                                       fontSize: 12, color: Colors.grey),
                                   maxLines: 1,
@@ -264,7 +264,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 Row(
                                   children: [
                                     Text(
-                                      "\$ ${((popularProducts[index].price) / (1 - popularProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                      "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                       style: const TextStyle(
                                           color: Colors.grey,
                                           decoration:
@@ -274,7 +274,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       width: 5,
                                     ),
                                     Text(
-                                      "\$ ${popularProducts[index].price}",
+                                      "\$ ${favoriteProducts[index].price}",
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),

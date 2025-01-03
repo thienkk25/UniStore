@@ -52,4 +52,8 @@ class UserFirebase {
       return e.toString();
     }
   }
+
+  User? getInforUserAuth() {
+    return auth.currentUser;
+  }
 }

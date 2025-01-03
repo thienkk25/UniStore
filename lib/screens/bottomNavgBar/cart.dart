@@ -16,7 +16,7 @@ class Cart extends ConsumerStatefulWidget {
 }
 
 class _CartState extends ConsumerState<Cart> {
-  bool isDelayed = false;
+  bool isData = false;
   late List<Product> dataYourCarts;
   late List<bool> checkBoxYourCarts;
   late List<TextEditingController> textEditingControllerYourCarts;
@@ -40,15 +40,14 @@ class _CartState extends ConsumerState<Cart> {
         ref.watch(textEditingControllerYourCartsProvider);
     if (dataYourCarts.isNotEmpty &&
         checkBoxYourCarts.isNotEmpty &&
-        textEditingControllerYourCarts.isNotEmpty) {
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          isDelayed = true;
-        });
-      });
+        textEditingControllerYourCarts.isNotEmpty &&
+        dataYourCarts.length == checkBoxYourCarts.length &&
+        checkBoxYourCarts.length == textEditingControllerYourCarts.length) {
+      isData = true;
       sumTotalProduct();
     }
-    return isDelayed
+
+    return isData
         ? Scaffold(
             appBar: AppBar(
               title: const Text("Your Cart"),
@@ -196,9 +195,11 @@ class _CartState extends ConsumerState<Cart> {
                                                   width: 40,
                                                   child: TextField(
                                                     onChanged: (value) {
-                                                      setState(() {
-                                                        sumTotalProduct();
-                                                      });
+                                                      if (value.isNotEmpty) {
+                                                        setState(() {
+                                                          sumTotalProduct();
+                                                        });
+                                                      }
                                                     },
                                                     controller:
                                                         textEditingControllerYourCarts[
@@ -404,7 +405,7 @@ class _CartState extends ConsumerState<Cart> {
             ),
           )
         : const Center(
-            child: CircularProgressIndicator(),
+            child: Text("No product"),
           );
   }
 

@@ -88,16 +88,13 @@ Future<void> loadMoreProduct(WidgetRef ref) async {
   }
 }
 
-// StateNotifier để quản lý danh sách sản phẩm và trạng thái
 class ProductStateNotifier extends StateNotifier<List<Product>> {
   ProductStateNotifier() : super([]);
 
-  // Phương thức để cập nhật danh sách sản phẩm
   void setProducts(List<Product> products) {
     state = [...products];
   }
 
-  // Phương thức để thêm sản phẩm vào danh sách
   void addProduct(List<Product> products) {
     state = [...state, ...products];
   }
@@ -108,10 +105,8 @@ final productProvider =
   (ref) => ProductStateNotifier(),
 );
 
-// Provider để lưu trữ dữ liệu sản phẩm toàn cục
 final dataProductProvider = StateProvider<List<Product>>((ref) {
-  final productList =
-      ref.watch(productProvider); // Đọc trạng thái từ productProvider
+  final productList = ref.watch(productProvider);
   return productList;
 });
 
@@ -192,7 +187,6 @@ Future<String> addCartProduct(int id) async {
         return "Add Success";
       }
     } else {
-      // Nếu giỏ hàng chưa tồn tại, tạo mới giỏ hàng với sản phẩm
       await firestore.collection("userCarts").doc(userId).set({
         'uid': userId,
         'products': [

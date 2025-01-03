@@ -74,7 +74,6 @@ class _HomeclientState extends ConsumerState<Homeclient> {
     AsyncValue<List<Product>> newArrivalsAsyncValue =
         productController.dataUriProductController(
             ref, "https://dummyjson.com/products?sortBy=createdAt&order=desc");
-
     return isDelayed
         ? Scaffold(
             appBar: AppBar(
@@ -92,18 +91,17 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                   },
                   suggestionsBuilder: (context, controller) {
                     final String data = controller.text.toLowerCase();
-                    List<String> searchList = dataProduct
-                        .map((e) => e.title)
-                        .where((item) => item.toLowerCase().contains(data))
+                    List<Product> searchList = dataProduct
+                        .where((e) => e.title.toLowerCase().contains(data))
                         .toList();
                     return searchList.isNotEmpty
                         ? List.generate(
-                            min(searchList.length, 20),
+                            min(searchList.length, 10),
                             (index) => InkWell(
                               onTap: () =>
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InfoProduct(
-                                            data: dataProduct[index],
+                                            data: searchList[index],
                                           ))),
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -113,7 +111,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
                                     leading: Image.network(
-                                      dataProduct[index].thumbnail,
+                                      searchList[index].thumbnail,
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -121,14 +119,14 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                     title: Column(
                                       children: [
                                         Text(
-                                          searchList[index],
+                                          searchList[index].title,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              "\$ ${((dataProduct[index].price) / (1 - dataProduct[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                              "\$ ${((searchList[index].price) / (1 - searchList[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
@@ -138,7 +136,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                               width: 5,
                                             ),
                                             Text(
-                                              "\$ ${dataProduct[index].price}",
+                                              "\$ ${searchList[index].price}",
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -563,10 +561,20 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           ),
                                         ],
                                       ),
-                                      const Positioned(
-                                          right: 0,
-                                          bottom: 10,
-                                          child: Icon(Icons.favorite))
+                                      Positioned(
+                                          left: 2,
+                                          top: 2,
+                                          child: Row(
+                                            children: [
+                                              Text(popularProducts[index]
+                                                  .rating
+                                                  .toString()),
+                                              const Icon(
+                                                Icons.star,
+                                                color: Colors.orange,
+                                              )
+                                            ],
+                                          ))
                                     ]),
                                   ),
                                 ),

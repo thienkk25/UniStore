@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/screens/welcome.dart';
+import 'package:shop_fashion/services/user_firebase.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -11,13 +13,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String notification = "Allow";
-
+  String theme = "Light";
+  String language = "En";
   @override
   Widget build(BuildContext context) {
     final double availableHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom;
     final double availableWidth = MediaQuery.of(context).size.width;
+    User? dataInforUser = UserFirebase().getInforUserAuth();
+
     return Scaffold(
       body: Column(
         children: [
@@ -40,7 +45,8 @@ class _ProfileState extends State<Profile> {
                       borderRadius: BorderRadius.circular(100),
                       clipBehavior: Clip.antiAlias,
                       child: Image.asset(
-                        "assets/screens/avatar_default.png",
+                        dataInforUser!.photoURL ??
+                            "assets/screens/avatar_default.png",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -60,11 +66,11 @@ class _ProfileState extends State<Profile> {
           const SizedBox(
             height: 70,
           ),
-          const Text(
-            "Your Name",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Text(
+            dataInforUser.displayName ?? "Your Name",
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          const Text("yourname@gmail.com"),
+          Text(dataInforUser.email ?? "yourname@gmail.com"),
           const SizedBox(
             height: 10,
           ),
@@ -84,70 +90,104 @@ class _ProfileState extends State<Profile> {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return Container(
-                      margin: const EdgeInsets.all(20),
-                      height: availableHeight / 3,
-                      width: availableWidth / 1.5,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return StatefulBuilder(
+                      builder: (BuildContext context,
+                          StateSetter setShowModalBottomSheet) {
+                        return Container(
+                          margin: const EdgeInsets.all(20),
+                          height: availableHeight / 3,
+                          width: availableWidth / 1.5,
+                          child: Column(
                             children: [
-                              const Text(
-                                "Settings",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              InkWell(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: const Icon(Icons.close))
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Theme"),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  PopupMenuButton(
-                                    itemBuilder: (context) => [
-                                      const PopupMenuItem(child: Text("Light")),
-                                      const PopupMenuItem(child: Text("Dark")),
+                                  const Text(
+                                    "Settings",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  InkWell(
+                                      onTap: () => Navigator.of(context).pop(),
+                                      child: const Icon(Icons.close))
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Theme"),
+                                  Row(
+                                    children: [
+                                      PopupMenuButton(
+                                        onSelected: (value) {
+                                          setShowModalBottomSheet(() {
+                                            theme = value;
+                                          });
+                                        },
+                                        itemBuilder: (context) => [
+                                          const PopupMenuItem(
+                                              value: "Light",
+                                              child: Text("Light")),
+                                          const PopupMenuItem(
+                                              value: "Dark",
+                                              child: Text("Dark")),
+                                        ],
+                                        child: Row(
+                                          children: [
+                                            Text(theme),
+                                            const Icon(
+                                                Icons.keyboard_arrow_down),
+                                          ],
+                                        ),
+                                      )
                                     ],
-                                    child: const Row(
-                                      children: [
-                                        Text("Light"),
-                                        Icon(Icons.keyboard_arrow_down),
-                                      ],
-                                    ),
                                   )
                                 ],
-                              )
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Language"),
+                                  Row(
+                                    children: [
+                                      PopupMenuButton(
+                                        onSelected: (value) {
+                                          setShowModalBottomSheet(() {
+                                            language = value;
+                                          });
+                                        },
+                                        itemBuilder: (context) => [
+                                          const PopupMenuItem(
+                                              value: "En", child: Text("En")),
+                                          const PopupMenuItem(
+                                              value: "Vn", child: Text("Vn")),
+                                        ],
+                                        child: Row(
+                                          children: [
+                                            Text(language),
+                                            const Icon(
+                                                Icons.keyboard_arrow_down),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Language"),
-                              InkWell(
-                                onTap: () {},
-                                child: const Row(
-                                  children: [
-                                    Text("En"),
-                                    Icon(Icons.keyboard_arrow_down)
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 );

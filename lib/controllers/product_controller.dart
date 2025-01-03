@@ -35,6 +35,12 @@ class ProductController {
             productValue.any((product) => product['id'] == element.id))
         .toList();
     ref.read(cartProductNotifierProvider.notifier).setStateCartProduct(data);
+    ref
+        .read(checkBoxYourCartsProvider.notifier)
+        .setStatecheckBoxYourCarts(data.length);
+    ref
+        .read(textEditingControllerYourCartsProvider.notifier)
+        .setStateTextEditingControllerYourCarts(data.length);
   }
 
   Future<String> addCartProductController(int id) async {
@@ -54,12 +60,6 @@ class ProductController {
             productValue.any((product) => product['id'] == element.id))
         .toList();
     ref.read(favoriteProductNotifierProvider.notifier).setStateFavorite(data);
-    ref
-        .read(checkBoxYourCartsProvider.notifier)
-        .setStatecheckBoxYourCarts(data.length);
-    ref
-        .read(textEditingControllerYourCartsProvider.notifier)
-        .setStateTextEditingControllerYourCarts(data.length);
   }
 
   Future<String> addFavoriteProductController(int id) async {

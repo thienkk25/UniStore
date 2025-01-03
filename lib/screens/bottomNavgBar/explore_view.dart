@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_fashion/controllers/user_controller.dart';
+import 'package:shop_fashion/services/explore_service.dart';
 
 class ExploreView extends StatefulWidget {
   const ExploreView({super.key});
@@ -9,6 +12,8 @@ class ExploreView extends StatefulWidget {
 
 class _ExploreViewState extends State<ExploreView> {
   TextEditingController textEditingController = TextEditingController();
+  String emailUser =
+      UserController().getInforUserAuthController()!.email.toString();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +25,15 @@ class _ExploreViewState extends State<ExploreView> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(emailUser),
+                    ],
+                  ),
+                ),
                 Container(
                   height: 50,
                   width: double.infinity,
@@ -53,7 +67,11 @@ class _ExploreViewState extends State<ExploreView> {
                       ),
                       TextButton.icon(
                         label: const Icon(Icons.send),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (textEditingController.text.isNotEmpty) {
+                            sendExplore(textEditingController.text);
+                          }
+                        },
                       )
                     ],
                   ),
@@ -61,48 +79,69 @@ class _ExploreViewState extends State<ExploreView> {
                 const SizedBox(
                   height: 20,
                 ),
-                ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) => Card(
-                    child: ListTile(
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Row(
-                                children: [
-                                  Text(
-                                    "reviewerName",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "date",
-                                style: TextStyle(
-                                    fontSize: 8, color: Colors.grey[500]),
-                              )
-                            ],
+                StreamBuilder(
+                  stream: ExploreService().realTimeChat(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Error"),
+                      );
+                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      List dataChat = snapshot.data!.reversed.toList();
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: dataChat.length,
+                        itemBuilder: (context, index) => Card(
+                          child: ListTile(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          dataChat[index]['name'],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      dataChat[index]['createAt'],
+                                      style: TextStyle(
+                                          fontSize: 8, color: Colors.grey[500]),
+                                    )
+                                  ],
+                                ),
+                                Text(
+                                  dataChat[index]['email'],
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey[500]),
+                                ),
+                                Text(dataChat[index]['message']),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "reviewerEmail",
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[500]),
-                          ),
-                          const Text("comment"),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    } else {
+                      return const Center(child: Text("No data available"));
+                    }
+                  },
                 ),
               ],
             ),
           ),
         ));
+  }
+
+  void sendExplore(String message) {
+    ExploreService().sendRealTimeChat(message);
   }
 }

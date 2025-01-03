@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_fashion/services/user_firebase.dart';
 
 class UserController {
@@ -19,6 +20,11 @@ class UserController {
 
   Future<String> logOutController() {
     final result = userFirebase.logOut();
+    return result;
+  }
+
+  User? getInforUserAuthController() {
+    final result = userFirebase.getInforUserAuth();
     return result;
   }
 }
