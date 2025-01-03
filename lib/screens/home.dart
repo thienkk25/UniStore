@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/Cart.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/explore_view.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/wishlist.dart';
+import 'package:shop_fashion/services/riverpod_home_view.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   int selectIndex = 0;
   final List<Widget> widgets = [
     const Homeclient(),
@@ -48,16 +50,32 @@ class _HomeState extends State<Home> {
               ),
               label: "Explore"),
           NavigationDestination(
-              icon: Icon(
-                Icons.shopping_bag_outlined,
-                color: selectIndex == 2 ? Colors.orange : Colors.black,
-              ),
+              icon: ref.watch(badgeCartProvider) != 0
+                  ? Badge(
+                      label: Text(ref.watch(badgeCartProvider).toString()),
+                      child: Icon(
+                        Icons.shopping_bag_outlined,
+                        color: selectIndex == 2 ? Colors.orange : Colors.black,
+                      ),
+                    )
+                  : Icon(
+                      Icons.shopping_bag_outlined,
+                      color: selectIndex == 2 ? Colors.orange : Colors.black,
+                    ),
               label: "Cart"),
           NavigationDestination(
-              icon: Icon(
-                Icons.favorite_border_outlined,
-                color: selectIndex == 3 ? Colors.orange : Colors.black,
-              ),
+              icon: ref.watch(badgeFavoriteProvider) != 0
+                  ? Badge(
+                      label: Text(ref.watch(badgeFavoriteProvider).toString()),
+                      child: Icon(
+                        Icons.favorite_border_outlined,
+                        color: selectIndex == 3 ? Colors.orange : Colors.black,
+                      ),
+                    )
+                  : Icon(
+                      Icons.favorite_border_outlined,
+                      color: selectIndex == 3 ? Colors.orange : Colors.black,
+                    ),
               label: "Wishlist"),
         ],
       ),

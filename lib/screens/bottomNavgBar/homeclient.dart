@@ -202,9 +202,8 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                   content: StatefulBuilder(
                                     builder: (BuildContext context,
                                         StateSetter setDialogState) {
-                                      // `setDialogState` là hàm callback để thay đổi trạng thái của widget
                                       return SizedBox(
-                                        height: 300, // Chiều cao của dialog
+                                        height: 300,
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 1.5,
@@ -212,8 +211,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           child: Wrap(
                                             clipBehavior: Clip.antiAlias,
                                             spacing: 5,
-                                            runSpacing:
-                                                5, // Khoảng cách giữa các dòng
+                                            runSpacing: 5,
                                             children: List.generate(
                                               types.length,
                                               (index) {
@@ -225,7 +223,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   onSelected: (bool value) {
                                                     setDialogState(() {
                                                       isCheckedFilter[index] =
-                                                          value; // Cập nhật trạng thái của chip
+                                                          value;
                                                     });
                                                   },
                                                   selectedColor: Colors.orange,

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/models/product_model.dart';
+import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
 class ProductController {
@@ -41,6 +42,7 @@ class ProductController {
     ref
         .read(textEditingControllerYourCartsProvider.notifier)
         .setStateTextEditingControllerYourCarts(data.length);
+    ref.read(badgeCartProvider.notifier).state = data.length;
   }
 
   Future<String> addCartProductController(int id) async {
@@ -60,6 +62,7 @@ class ProductController {
             productValue.any((product) => product['id'] == element.id))
         .toList();
     ref.read(favoriteProductNotifierProvider.notifier).setStateFavorite(data);
+    ref.read(badgeFavoriteProvider.notifier).state = data.length;
   }
 
   Future<String> addFavoriteProductController(int id) async {

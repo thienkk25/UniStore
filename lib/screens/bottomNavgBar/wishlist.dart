@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
+import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
 class Wishlist extends ConsumerStatefulWidget {
@@ -64,20 +65,17 @@ class _Whilist extends ConsumerState<Wishlist> {
               searchController: searchController,
               suggestionsBuilder: (context, controller) {
                 final String data = controller.text.toLowerCase();
-                List<String> searchList = favoriteProducts
-                    .map(
-                      (e) => e.title,
-                    )
-                    .where((item) => item.toLowerCase().contains(data))
+                List<Product> searchList = favoriteProducts
+                    .where((e) => e.title.toLowerCase().contains(data))
                     .toList();
                 return searchList.isNotEmpty
                     ? List.generate(
-                        min(searchList.length, 20),
+                        min(searchList.length, 10),
                         (index) => InkWell(
                               onTap: () =>
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InfoProduct(
-                                            data: favoriteProducts[index],
+                                            data: searchList[index],
                                           ))),
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -87,7 +85,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
                                     leading: Image.network(
-                                      favoriteProducts[index].thumbnail,
+                                      searchList[index].thumbnail,
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -95,14 +93,14 @@ class _Whilist extends ConsumerState<Wishlist> {
                                     title: Column(
                                       children: [
                                         Text(
-                                          searchList[index],
+                                          searchList[index].title,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                              "\$ ${((searchList[index].price) / (1 - searchList[index].discountPercentage / 100)).toStringAsFixed(2)}",
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   decoration: TextDecoration
@@ -112,7 +110,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                                               width: 5,
                                             ),
                                             Text(
-                                              "\$ ${favoriteProducts[index].price}",
+                                              "\$ ${searchList[index].price}",
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -160,52 +158,70 @@ class _Whilist extends ConsumerState<Wishlist> {
                           clipBehavior: Clip.antiAlias,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Stack(
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    favoriteProducts[index].thumbnail,
-                                    height: 100,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  favoriteProducts[index].title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  favoriteProducts[index].description,
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          color: Colors.grey,
-                                          decoration:
-                                              TextDecoration.lineThrough),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        favoriteProducts[index].thumbnail,
+                                        height: 100,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
+                                    const SizedBox(height: 10),
                                     Text(
-                                      "\$ ${favoriteProducts[index].price}",
+                                      favoriteProducts[index].title,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      favoriteProducts[index].description,
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "\$ ${favoriteProducts[index].price}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      deleteFavorite(favoriteProducts[index].id,
+                                          favoriteProducts[index]);
+                                    },
+                                    child: const Text(
+                                      "Unfavorite",
+                                      style: TextStyle(color: Colors.orange),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -294,5 +310,27 @@ class _Whilist extends ConsumerState<Wishlist> {
         ),
       ],
     ));
+  }
+
+  Future<void> deleteFavorite(int id, Product product) async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      ),
+    );
+    ref
+        .read(favoriteProductNotifierProvider.notifier)
+        .removeStateFavorite(product);
+
+    ref.read(badgeFavoriteProvider.notifier).state--;
+    final result = await ref
+        .watch(productControllerProvider)
+        .deleteFavoriteProductController(id);
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
   }
 }

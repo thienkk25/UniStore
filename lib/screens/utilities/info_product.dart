@@ -7,6 +7,7 @@ import 'package:shop_fashion/controllers/product_controller.dart';
 
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
+import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
 class InfoProduct extends ConsumerStatefulWidget {
@@ -307,8 +308,11 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
         .addStateCartProduct(widget.data);
     ref
         .read(textEditingControllerYourCartsProvider.notifier)
-        .addStateTextEditingControllerYourCarts();
+        .addStateTextEditingControllerYourCarts(
+            ref.watch(quantityProvider).toString());
     ref.read(checkBoxYourCartsProvider.notifier).addStatecheckBoxYourCarts();
+    ref.read(badgeCartProvider.notifier).state++;
+    ref.read(quantityProvider.notifier).state = 1;
     final result = await ref
         .watch(productControllerProvider)
         .addCartProductController(widget.data.id);
@@ -330,9 +334,13 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
     ref
         .read(favoriteProductNotifierProvider.notifier)
         .addStateFavorite(widget.data);
+
     final result = await ref
         .watch(productControllerProvider)
         .addFavoriteProductController(widget.data.id);
+    if (result != "Favorite already in the data") {
+      ref.read(badgeFavoriteProvider.notifier).state++;
+    }
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
@@ -409,15 +417,15 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
   }
 }
 
-class PageOneSupport extends StatefulWidget {
+class PageOneSupport extends ConsumerStatefulWidget {
   final String description;
   const PageOneSupport({super.key, required this.description});
 
   @override
-  State<PageOneSupport> createState() => _PageOneSupportState();
+  ConsumerState<PageOneSupport> createState() => _PageOneSupportState();
 }
 
-class _PageOneSupportState extends State<PageOneSupport> {
+class _PageOneSupportState extends ConsumerState<PageOneSupport> {
   TextEditingController quantityController = TextEditingController(text: "1");
   @override
   void initState() {
@@ -467,6 +475,8 @@ class _PageOneSupportState extends State<PageOneSupport> {
                           quantityController.text =
                               (int.parse(quantityController.text) + 1)
                                   .toString();
+                          ref.read(quantityProvider.notifier).state =
+                              int.parse(quantityController.text);
                         }
                       },
                       child: Container(
@@ -523,6 +533,8 @@ class _PageOneSupportState extends State<PageOneSupport> {
                           quantityController.text =
                               (int.parse(quantityController.text) - 1)
                                   .toString();
+                          ref.read(quantityProvider.notifier).state =
+                              int.parse(quantityController.text);
                         }
                       },
                       child: Container(

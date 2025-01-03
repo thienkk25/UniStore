@@ -271,8 +271,8 @@ class TextEditingControllerYourCarts
     state = List.generate(length, (index) => TextEditingController(text: "1"));
   }
 
-  addStateTextEditingControllerYourCarts() {
-    state = [...state, TextEditingController(text: "1")];
+  addStateTextEditingControllerYourCarts(String count) {
+    state = [...state, TextEditingController(text: count)];
   }
 
   removeStateTextEditingControllerYourCarts(int index) {
@@ -334,7 +334,7 @@ class FavoriteProductNotifier extends StateNotifier<List<Product>> {
   }
 
   removeStateFavorite(Product product) {
-    if (!state.contains(product)) {
+    if (state.contains(product)) {
       state = state.where((e) => e.id != product.id).toList();
     }
   }
@@ -419,6 +419,6 @@ Future<String> deleteFavoriteProduct(int id) async {
   }
 }
 
-final testProvider = StateProvider(
-  (ref) => 0,
+final quantityProvider = StateProvider<int>(
+  (ref) => 1,
 );
