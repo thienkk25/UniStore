@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
+import 'package:shop_fashion/services/notify_service.dart';
 import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
@@ -329,6 +330,10 @@ class _Whilist extends ConsumerState<Wishlist> {
     final result = await ref
         .watch(productControllerProvider)
         .deleteFavoriteProductController(id);
+    ref
+        .read(notifyNotifierProvider.notifier)
+        .addSetState("$result ${product.title}");
+    ref.read(badgeNotifyProvider.notifier).state++;
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));

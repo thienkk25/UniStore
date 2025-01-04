@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
+import 'package:shop_fashion/services/notify_service.dart';
 import 'package:shop_fashion/services/riverpod_home_view.dart';
 
 import '../../services/riverpod_product.dart';
@@ -404,9 +405,10 @@ class _CartState extends ConsumerState<Cart> {
         ),
       ),
     );
+    Product dataTemporary = dataYourCarts[index];
     ref
         .read(cartProductNotifierProvider.notifier)
-        .removeStateCartProduct(dataYourCarts[index]);
+        .removeStateCartProduct(dataTemporary);
     ref
         .read(textEditingControllerYourCartsProvider.notifier)
         .removeStateTextEditingControllerYourCarts(index);
@@ -418,6 +420,11 @@ class _CartState extends ConsumerState<Cart> {
     String result = await ref
         .watch(productControllerProvider)
         .deleteCartProductController(id);
+
+    ref
+        .read(notifyNotifierProvider.notifier)
+        .addSetState("$result ${dataTemporary.title}");
+    ref.read(badgeNotifyProvider.notifier).state++;
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));

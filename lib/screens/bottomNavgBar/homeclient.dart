@@ -7,6 +7,7 @@ import 'package:shop_fashion/screens/utilities/info_product.dart';
 import 'package:shop_fashion/screens/utilities/notify.dart';
 import 'package:shop_fashion/screens/utilities/profile.dart';
 import 'package:shop_fashion/screens/utilities/view_more.dart';
+import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
 class Homeclient extends ConsumerStatefulWidget {
@@ -157,7 +158,12 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.notifications),
+                  icon: ref.watch(badgeNotifyProvider) != 0
+                      ? Badge(
+                          label:
+                              Text(ref.watch(badgeNotifyProvider).toString()),
+                          child: const Icon(Icons.notifications))
+                      : const Icon(Icons.notifications),
                   onPressed: () {
                     Navigator.push(
                         context,

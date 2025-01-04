@@ -7,6 +7,7 @@ import 'package:shop_fashion/controllers/product_controller.dart';
 
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
+import 'package:shop_fashion/services/notify_service.dart';
 import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/riverpod_product.dart';
 
@@ -316,7 +317,10 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
     final result = await ref
         .watch(productControllerProvider)
         .addCartProductController(widget.data.id);
-
+    ref
+        .read(notifyNotifierProvider.notifier)
+        .addSetState("$result ${widget.data.title}");
+    ref.read(badgeNotifyProvider.notifier).state++;
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
@@ -340,6 +344,10 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
         .addFavoriteProductController(widget.data.id);
     if (result != "Favorite already in the data") {
       ref.read(badgeFavoriteProvider.notifier).state++;
+      ref
+          .read(notifyNotifierProvider.notifier)
+          .addSetState("$result ${widget.data.title}");
+      ref.read(badgeNotifyProvider.notifier).state++;
     }
     if (!mounted) return;
     Navigator.of(context).pop();
@@ -347,7 +355,6 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
   }
 }
 
-// Tạo một màn hình mới để hiển thị ảnh ở chế độ vuốt
 class ImageViewerPage extends StatefulWidget {
   final int initialIndex;
   final List<String> imageProduct;

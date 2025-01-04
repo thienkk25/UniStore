@@ -14,7 +14,7 @@ final isLoadingProvider = StateProvider<bool>((ref) => false);
 final isLoadingMoreProvider = StateProvider<bool>((ref) => false);
 final firestore = FirebaseFirestore.instance;
 final auth = FirebaseAuth.instance;
-
+String userId = auth.currentUser!.uid;
 Future<List<Product>> fetchDataProduct() async {
   try {
     final url = Uri.parse("https://dummyjson.com/products?limit=194");
@@ -121,7 +121,6 @@ final dataUriProductProvider =
 
 Future<List> fetchCartProduct() async {
   try {
-    String userId = auth.currentUser!.uid;
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
     if (cartDoc.exists) {
@@ -162,8 +161,6 @@ final cartProductNotifierProvider =
 
 Future<String> addCartProduct(int id) async {
   try {
-    String userId = auth.currentUser!.uid;
-
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
 
@@ -205,33 +202,30 @@ Future<String> addCartProduct(int id) async {
 
 Future<String> deleteCartProduct(int id) async {
   try {
-    String userId = auth.currentUser!.uid;
-
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
 
-    if (cartDoc.exists) {
-      Map<String, dynamic> cartData = cartDoc.data() as Map<String, dynamic>;
-      List<dynamic> products = cartData['products'] ?? [];
-
-      bool productExists = products.any((product) => product['id'] == id);
-
-      if (productExists) {
-        products.removeWhere((product) => product['id'] == id);
-        await firestore
-            .collection("userCarts")
-            .doc(userId)
-            .update({'products': products});
-
-        return "Delete Success";
-      } else {
-        return "Product not found in cart";
-      }
-    } else {
+    if (!cartDoc.exists) {
       return "Cart not found";
     }
+
+    Map<String, dynamic>? cartData = cartDoc.data() as Map<String, dynamic>?;
+    List<dynamic> products = cartData?['products'] ?? [];
+
+    int productIndex = products.indexWhere((product) => product['id'] == id);
+    if (productIndex == -1) {
+      return "Product not found in cart";
+    }
+
+    products.removeAt(productIndex);
+
+    await firestore
+        .collection("userCarts")
+        .doc(userId)
+        .update({'products': products});
+    return "Delete Success";
   } catch (e) {
-    return e.toString();
+    return "An error occurred while deleting the product";
   }
 }
 
@@ -305,7 +299,6 @@ final textEditingControllerYourCartsProvider = StateNotifierProvider<
 
 Future<List> fetchFavoriteProduct() async {
   try {
-    String userId = auth.currentUser!.uid;
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
     if (cartDoc.exists) {
@@ -346,8 +339,6 @@ final favoriteProductNotifierProvider =
 
 Future<String> addFavoriteProduct(int id) async {
   try {
-    String userId = auth.currentUser!.uid;
-
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
 
@@ -389,8 +380,6 @@ Future<String> addFavoriteProduct(int id) async {
 
 Future<String> deleteFavoriteProduct(int id) async {
   try {
-    String userId = auth.currentUser!.uid;
-
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
 
