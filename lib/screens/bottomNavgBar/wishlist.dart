@@ -241,62 +241,81 @@ class _Whilist extends ConsumerState<Wishlist> {
                     itemCount: favoriteProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () =>
-                            Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => InfoProduct(
-                            data: favoriteProducts[index],
-                          ),
-                        )),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => InfoProduct(
+                              data: favoriteProducts[index],
+                            ),
+                          ));
+                        },
                         child: Card(
                           clipBehavior: Clip.antiAlias,
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Stack(
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    favoriteProducts[index].thumbnail,
-                                    height: 100,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  favoriteProducts[index].title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  favoriteProducts[index].description,
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          color: Colors.grey,
-                                          decoration:
-                                              TextDecoration.lineThrough),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        favoriteProducts[index].thumbnail,
+                                        height: 100,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
+                                    const SizedBox(height: 10),
                                     Text(
-                                      "\$ ${favoriteProducts[index].price}",
+                                      favoriteProducts[index].title,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      favoriteProducts[index].description,
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "\$ ${favoriteProducts[index].price}",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                                Positioned(
+                                  right: 0,
+                                  bottom: 0,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      deleteFavorite(favoriteProducts[index].id,
+                                          favoriteProducts[index]);
+                                    },
+                                    child: const Text(
+                                      "Unfavorite",
+                                      style: TextStyle(color: Colors.orange),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
