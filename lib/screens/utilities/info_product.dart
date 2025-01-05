@@ -71,7 +71,7 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                               ));
                         },
                         child: CachedNetworkImage(
-                          imageUrl: widget.data.thumbnail,
+                          imageUrl: widget.data.images[index],
                           progressIndicatorBuilder: (context, url, progress) =>
                               const CircularProgressIndicator(),
                           errorWidget: (context, url, error) =>

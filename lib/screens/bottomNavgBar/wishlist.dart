@@ -200,7 +200,11 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    Row(
+                                    Wrap(
+                                      alignment: WrapAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      runAlignment: WrapAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "\$ ${((favoriteProducts[index].price) / (1 - favoriteProducts[index].discountPercentage / 100)).toStringAsFixed(2)}",
