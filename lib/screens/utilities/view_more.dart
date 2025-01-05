@@ -58,7 +58,7 @@ class ViewMore extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  mainAxisExtent: 220),
+                  mainAxisExtent: 230),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
@@ -104,8 +104,10 @@ class ViewMore extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            runAlignment: WrapAlignment.spaceBetween,
+                            crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               Text(
                                 "\$ ${((data[index].price) / (1 - data[index].discountPercentage / 100)).toStringAsFixed(2)}",

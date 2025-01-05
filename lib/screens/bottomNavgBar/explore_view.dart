@@ -88,7 +88,7 @@ class _ExploreViewState extends State<ExploreView> {
                         child: Text("Error"),
                       );
                     } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      List dataChat = snapshot.data!.reversed.toList();
+                      List dataChat = snapshot.data!;
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -141,6 +141,7 @@ class _ExploreViewState extends State<ExploreView> {
   }
 
   void sendExplore(String message) {
+    textEditingController.clear();
     ExploreService().sendRealTimeChat(message);
   }
 }

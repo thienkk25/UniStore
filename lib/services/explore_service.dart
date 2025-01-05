@@ -11,6 +11,7 @@ class ExploreService {
 
       if (dataMap is Map) {
         final data = List.from(dataMap.values);
+        data.sort((a, b) => b['createAt'].compareTo(a['createAt']));
 
         return data;
       }

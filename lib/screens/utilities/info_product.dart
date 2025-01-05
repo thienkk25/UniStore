@@ -623,8 +623,12 @@ class _PageTwoSupportState extends State<PageTwoSupport> {
                       ],
                     ),
                     Text(
-                      widget.product.reviews[index].date.toIso8601String(),
+                      widget.product.reviews[index].date
+                          .toString()
+                          .substring(0, 10),
                       style: TextStyle(fontSize: 8, color: Colors.grey[500]),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     )
                   ],
                 ),

@@ -757,7 +757,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           crossAxisCount: 2,
                                           mainAxisSpacing: 10,
                                           crossAxisSpacing: 10,
-                                          mainAxisExtent: 210),
+                                          mainAxisExtent: 230),
                                   itemCount: dataProductLoad.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -812,7 +812,11 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
-                                              Row(
+                                              Wrap(
+                                                alignment:
+                                                    WrapAlignment.spaceBetween,
+                                                runAlignment:
+                                                    WrapAlignment.spaceBetween,
                                                 children: [
                                                   Text(
                                                     "\$ ${((dataProductLoad[index].price) / (1 - dataProductLoad[index].discountPercentage / 100)).toStringAsFixed(2)}",

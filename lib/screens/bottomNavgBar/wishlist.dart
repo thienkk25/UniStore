@@ -150,7 +150,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
-                            mainAxisExtent: 220),
+                            mainAxisExtent: 230),
                     itemCount: favoriteProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(

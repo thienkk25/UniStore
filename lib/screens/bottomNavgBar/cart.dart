@@ -53,262 +53,547 @@ class _CartState extends ConsumerState<Cart> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: dataYourCarts.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: Slidable(
-                      key: Key(dataYourCarts[index].id.toString()),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        // A pane can dismiss the Slidable.
-                        dismissible: DismissiblePane(onDismissed: () async {
-                          deleteCart(dataYourCarts[index].id, index);
-                          setState(() {
-                            sumTotalProduct();
-                          });
-                        }),
-                        children: [
-                          SlidableAction(
-                            onPressed: (context) {
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 330) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: dataYourCarts.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Slidable(
+                            key: Key(dataYourCarts[index].id.toString()),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              // A pane can dismiss the Slidable.
+                              dismissible:
+                                  DismissiblePane(onDismissed: () async {
+                                deleteCart(dataYourCarts[index].id, index);
+                                setState(() {
+                                  sumTotalProduct();
+                                });
+                              }),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    deleteCart(dataYourCarts[index].id, index);
+                                    setState(() {
+                                      sumTotalProduct();
+                                    });
+                                  },
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
+                            ),
+                            child: Card(
+                              child: SizedBox(
+                                height: 100,
+                                width: double.infinity,
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                      value: checkBoxYourCarts[index],
+                                      onChanged: (value) {
+                                        ref
+                                            .read(checkBoxYourCartsProvider
+                                                .notifier)
+                                            .toggleStateCheckBoxYourCarts(
+                                                index);
+                                      },
+                                    ),
+                                    ClipRRect(
+                                      borderRadius:
+                                          BorderRadiusDirectional.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            dataYourCarts[index].thumbnail,
+                                        progressIndicatorBuilder: (context, url,
+                                                progress) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                        fit: BoxFit.cover,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(dataYourCarts[index].title,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis),
+                                          Text(dataYourCarts[index].category,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "\$ ${dataYourCarts[index].price}",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        if (textEditingControllerYourCarts[
+                                                                index]
+                                                            .text
+                                                            .isEmpty) {
+                                                          textEditingControllerYourCarts[
+                                                                  index]
+                                                              .text = "1";
+                                                        } else if (int.parse(
+                                                                textEditingControllerYourCarts[
+                                                                        index]
+                                                                    .text) ==
+                                                            999) {
+                                                        } else {
+                                                          textEditingControllerYourCarts[
+                                                                  index]
+                                                              .text = (int.parse(
+                                                                      textEditingControllerYourCarts[
+                                                                              index]
+                                                                          .text) +
+                                                                  1)
+                                                              .toString();
+                                                          setState(() {
+                                                            sumTotalProduct();
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 1),
+                                                          color:
+                                                              Colors.grey[300],
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.add,
+                                                          size: 20,
+                                                          color: Colors.orange,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 40,
+                                                    child: TextField(
+                                                      onChanged: (value) {
+                                                        if (value.isNotEmpty) {
+                                                          setState(() {
+                                                            sumTotalProduct();
+                                                          });
+                                                        }
+                                                      },
+                                                      controller:
+                                                          textEditingControllerYourCarts[
+                                                              index],
+                                                      style: const TextStyle(
+                                                          fontSize: 14),
+                                                      cursorHeight: 14,
+                                                      cursorColor:
+                                                          Colors.orange,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .zero,
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    width: 1)),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.zero,
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 1),
+                                                        ),
+                                                        contentPadding:
+                                                            EdgeInsets.symmetric(
+                                                                vertical: -2,
+                                                                horizontal:
+                                                                    0), // Căn giữa nội dung
+                                                      ),
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      inputFormatters: [
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly,
+                                                        LengthLimitingTextInputFormatter(
+                                                            3)
+                                                      ],
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign
+                                                          .center, // Căn giữa nội dung văn bản
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 20,
+                                                    child: GestureDetector(
+                                                        onTap: () {
+                                                          if (textEditingControllerYourCarts[
+                                                                  index]
+                                                              .text
+                                                              .isEmpty) {
+                                                            textEditingControllerYourCarts[
+                                                                    index]
+                                                                .text = "1";
+                                                          } else if (int.parse(
+                                                                      textEditingControllerYourCarts[
+                                                                              index]
+                                                                          .text) ==
+                                                                  0 ||
+                                                              int.parse(textEditingControllerYourCarts[
+                                                                          index]
+                                                                      .text) ==
+                                                                  1) {
+                                                          } else {
+                                                            textEditingControllerYourCarts[
+                                                                    index]
+                                                                .text = (int.parse(ref
+                                                                        .watch(textEditingControllerYourCartsProvider)[
+                                                                            index]
+                                                                        .text) -
+                                                                    1)
+                                                                .toString();
+                                                            setState(() {
+                                                              sumTotalProduct();
+                                                            });
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border:
+                                                                  Border.all(
+                                                                      width: 1),
+                                                              color: Colors
+                                                                  .grey[300],
+                                                            ),
+                                                            child: const Icon(
+                                                              Icons.remove,
+                                                              size: 20,
+                                                              color:
+                                                                  Colors.orange,
+                                                            ))),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: dataYourCarts.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Slidable(
+                          key: Key(dataYourCarts[index].id.toString()),
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            // A pane can dismiss the Slidable.
+                            dismissible: DismissiblePane(onDismissed: () async {
                               deleteCart(dataYourCarts[index].id, index);
                               setState(() {
                                 sumTotalProduct();
                               });
-                            },
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                          ),
-                        ],
-                      ),
-                      child: Card(
-                        child: SizedBox(
-                          height: 100,
-                          width: double.infinity,
-                          child: Row(
+                            }),
                             children: [
-                              Checkbox(
-                                value: checkBoxYourCarts[index],
-                                onChanged: (value) {
-                                  ref
-                                      .read(checkBoxYourCartsProvider.notifier)
-                                      .toggleStateCheckBoxYourCarts(index);
+                              SlidableAction(
+                                onPressed: (context) {
+                                  deleteCart(dataYourCarts[index].id, index);
+                                  setState(() {
+                                    sumTotalProduct();
+                                  });
                                 },
+                                backgroundColor: const Color(0xFFFE4A49),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
                               ),
-                              ClipRRect(
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: dataYourCarts[index].thumbnail,
-                                  progressIndicatorBuilder:
-                                      (context, url, progress) =>
-                                          const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                  fit: BoxFit.cover,
-                                  height: 100,
-                                  width: 100,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(dataYourCarts[index].title,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                    Text(dataYourCarts[index].category,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis),
-                                    Row(
+                            ],
+                          ),
+                          child: Card(
+                            child: SizedBox(
+                              height: 100,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: checkBoxYourCarts[index],
+                                    onChanged: (value) {
+                                      ref
+                                          .read(checkBoxYourCartsProvider
+                                              .notifier)
+                                          .toggleStateCheckBoxYourCarts(index);
+                                    },
+                                  ),
+                                  ClipRRect(
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: dataYourCarts[index].thumbnail,
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) =>
+                                              const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                      fit: BoxFit.cover,
+                                      height: 100,
+                                      width: 100,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Text(
-                                          "\$ ${dataYourCarts[index].price}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                        Text(dataYourCarts[index].title,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis),
+                                        Text(dataYourCarts[index].category,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis),
                                         Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  if (textEditingControllerYourCarts[
-                                                          index]
-                                                      .text
-                                                      .isEmpty) {
-                                                    textEditingControllerYourCarts[
-                                                            index]
-                                                        .text = "1";
-                                                  } else if (int.parse(
-                                                          textEditingControllerYourCarts[
-                                                                  index]
-                                                              .text) ==
-                                                      999) {
-                                                  } else {
-                                                    textEditingControllerYourCarts[
-                                                            index]
-                                                        .text = (int.parse(
-                                                                textEditingControllerYourCarts[
-                                                                        index]
-                                                                    .text) +
-                                                            1)
-                                                        .toString();
-                                                    setState(() {
-                                                      sumTotalProduct();
-                                                    });
-                                                  }
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    border:
-                                                        Border.all(width: 1),
-                                                    color: Colors.grey[300],
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.add,
-                                                    size: 20,
-                                                    color: Colors.orange,
-                                                  ),
-                                                ),
-                                              ),
+                                            Text(
+                                              "\$ ${dataYourCarts[index].price}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            SizedBox(
-                                              height: 20,
-                                              width: 40,
-                                              child: TextField(
-                                                onChanged: (value) {
-                                                  if (value.isNotEmpty) {
-                                                    setState(() {
-                                                      sumTotalProduct();
-                                                    });
-                                                  }
-                                                },
-                                                controller:
-                                                    textEditingControllerYourCarts[
-                                                        index],
-                                                style: const TextStyle(
-                                                    fontSize: 14),
-                                                cursorHeight: 14,
-                                                cursorColor: Colors.orange,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.zero,
-                                                          borderSide: BorderSide(
-                                                              color:
-                                                                  Colors.black,
-                                                              width: 1)),
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.zero,
-                                                    borderSide:
-                                                        BorderSide(width: 1),
-                                                  ),
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: -2,
-                                                          horizontal:
-                                                              0), // Căn giữa nội dung
-                                                ),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .digitsOnly,
-                                                  LengthLimitingTextInputFormatter(
-                                                      3)
-                                                ],
-                                                maxLines: 1,
-                                                textAlign: TextAlign
-                                                    .center, // Căn giữa nội dung văn bản
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: GestureDetector(
-                                                  onTap: () {
-                                                    if (textEditingControllerYourCarts[
-                                                            index]
-                                                        .text
-                                                        .isEmpty) {
-                                                      textEditingControllerYourCarts[
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (textEditingControllerYourCarts[
                                                               index]
-                                                          .text = "1";
-                                                    } else if (int.parse(
-                                                                textEditingControllerYourCarts[
-                                                                        index]
-                                                                    .text) ==
-                                                            0 ||
-                                                        int.parse(
-                                                                textEditingControllerYourCarts[
-                                                                        index]
-                                                                    .text) ==
-                                                            1) {
-                                                    } else {
-                                                      textEditingControllerYourCarts[
-                                                              index]
-                                                          .text = (int.parse(ref
-                                                                  .watch(textEditingControllerYourCartsProvider)[
+                                                          .text
+                                                          .isEmpty) {
+                                                        textEditingControllerYourCarts[
+                                                                index]
+                                                            .text = "1";
+                                                      } else if (int.parse(
+                                                              textEditingControllerYourCarts[
                                                                       index]
-                                                                  .text) -
-                                                              1)
-                                                          .toString();
-                                                      setState(() {
-                                                        sumTotalProduct();
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Container(
+                                                                  .text) ==
+                                                          999) {
+                                                      } else {
+                                                        textEditingControllerYourCarts[
+                                                                index]
+                                                            .text = (int.parse(
+                                                                    textEditingControllerYourCarts[
+                                                                            index]
+                                                                        .text) +
+                                                                1)
+                                                            .toString();
+                                                        setState(() {
+                                                          sumTotalProduct();
+                                                        });
+                                                      }
+                                                    },
+                                                    child: Container(
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
                                                             width: 1),
                                                         color: Colors.grey[300],
                                                       ),
                                                       child: const Icon(
-                                                        Icons.remove,
+                                                        Icons.add,
                                                         size: 20,
                                                         color: Colors.orange,
-                                                      ))),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 40,
+                                                  child: TextField(
+                                                    onChanged: (value) {
+                                                      if (value.isNotEmpty) {
+                                                        setState(() {
+                                                          sumTotalProduct();
+                                                        });
+                                                      }
+                                                    },
+                                                    controller:
+                                                        textEditingControllerYourCarts[
+                                                            index],
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
+                                                    cursorHeight: 14,
+                                                    cursorColor: Colors.orange,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      width:
+                                                                          1)),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.zero,
+                                                        borderSide: BorderSide(
+                                                            width: 1),
+                                                      ),
+                                                      contentPadding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: -2,
+                                                              horizontal:
+                                                                  0), // Căn giữa nội dung
+                                                    ),
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter
+                                                          .digitsOnly,
+                                                      LengthLimitingTextInputFormatter(
+                                                          3)
+                                                    ],
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign
+                                                        .center, // Căn giữa nội dung văn bản
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        if (textEditingControllerYourCarts[
+                                                                index]
+                                                            .text
+                                                            .isEmpty) {
+                                                          textEditingControllerYourCarts[
+                                                                  index]
+                                                              .text = "1";
+                                                        } else if (int.parse(
+                                                                    textEditingControllerYourCarts[
+                                                                            index]
+                                                                        .text) ==
+                                                                0 ||
+                                                            int.parse(textEditingControllerYourCarts[
+                                                                        index]
+                                                                    .text) ==
+                                                                1) {
+                                                        } else {
+                                                          textEditingControllerYourCarts[
+                                                                  index]
+                                                              .text = (int.parse(ref
+                                                                      .watch(textEditingControllerYourCartsProvider)[
+                                                                          index]
+                                                                      .text) -
+                                                                  1)
+                                                              .toString();
+                                                          setState(() {
+                                                            sumTotalProduct();
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                width: 1),
+                                                            color: Colors
+                                                                .grey[300],
+                                                          ),
+                                                          child: const Icon(
+                                                            Icons.remove,
+                                                            size: 20,
+                                                            color:
+                                                                Colors.orange,
+                                                          ))),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                )
+                                              ],
                                             )
                                           ],
                                         )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }),
+                      );
+                    });
+              },
+            ),
           ),
         ),
         bottomNavigationBar: Container(
