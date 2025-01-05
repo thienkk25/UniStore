@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
@@ -111,8 +112,13 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
-                                    leading: Image.network(
-                                      searchList[index].thumbnail,
+                                    leading: CachedNetworkImage(
+                                      imageUrl: searchList[index].thumbnail,
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) =>
+                                              const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -397,8 +403,15 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                             borderRadius:
                                                 BorderRadiusDirectional
                                                     .circular(10),
-                                            child: Image.network(
-                                              specialOffer.first.thumbnail,
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  specialOffer.first.thumbnail,
+                                              progressIndicatorBuilder: (context,
+                                                      url, progress) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
                                               fit: BoxFit.cover,
                                               height: 100,
                                               width: 100,
@@ -521,8 +534,15 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Image.network(
-                                              popularProducts[index].thumbnail,
+                                            child: CachedNetworkImage(
+                                              imageUrl: popularProducts[index]
+                                                  .thumbnail,
+                                              progressIndicatorBuilder: (context,
+                                                      url, progress) =>
+                                                  const CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
                                               height: 150,
                                               fit: BoxFit.cover,
                                             ),
@@ -654,8 +674,16 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                               ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  newArrivals[index].thumbnail,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: newArrivals[index]
+                                                      .thumbnail,
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                              progress) =>
+                                                          const CircularProgressIndicator(),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                   height: 150,
                                                   fit: BoxFit.cover,
                                                 ),
@@ -751,9 +779,17 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                               ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  dataProductLoad[index]
-                                                      .thumbnail,
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      dataProductLoad[index]
+                                                          .thumbnail,
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                              progress) =>
+                                                          const CircularProgressIndicator(),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                   height: 100,
                                                   width: double.infinity,
                                                   fit: BoxFit.cover,
@@ -835,9 +871,17 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                               ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  dataProductLoad[index]
-                                                      .thumbnail,
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      dataProductLoad[index]
+                                                          .thumbnail,
+                                                  progressIndicatorBuilder:
+                                                      (context, url,
+                                                              progress) =>
+                                                          const CircularProgressIndicator(),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                   height: 100,
                                                   width: double.infinity,
                                                   fit: BoxFit.cover,

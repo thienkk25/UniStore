@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
@@ -85,8 +86,13 @@ class _Whilist extends ConsumerState<Wishlist> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListTile(
-                                    leading: Image.network(
-                                      searchList[index].thumbnail,
+                                    leading: CachedNetworkImage(
+                                      imageUrl: searchList[index].thumbnail,
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) =>
+                                              const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                       fit: BoxFit.cover,
                                       height: 50,
                                       width: 50,
@@ -166,8 +172,14 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        favoriteProducts[index].thumbnail,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            favoriteProducts[index].thumbnail,
+                                        progressIndicatorBuilder: (context, url,
+                                                progress) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                         height: 100,
                                         width: double.infinity,
                                         fit: BoxFit.cover,
@@ -259,8 +271,14 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        favoriteProducts[index].thumbnail,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            favoriteProducts[index].thumbnail,
+                                        progressIndicatorBuilder: (context, url,
+                                                progress) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                         height: 100,
                                         width: double.infinity,
                                         fit: BoxFit.cover,

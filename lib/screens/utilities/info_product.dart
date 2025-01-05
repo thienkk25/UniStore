@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,8 +70,12 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                                 ),
                               ));
                         },
-                        child: Image.network(
-                          widget.data.thumbnail,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.data.thumbnail,
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                           fit: BoxFit.cover,
                         ),
                       );
@@ -397,8 +402,11 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
           itemBuilder: (context, index) {
             return Hero(
               tag: widget.imageProduct[index],
-              child: Image.network(
-                widget.imageProduct[index],
+              child: CachedNetworkImage(
+                imageUrl: widget.imageProduct[index],
+                progressIndicatorBuilder: (context, url, progress) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
                 fit: BoxFit.cover,
               ),
             );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,8 +102,13 @@ class _CartState extends ConsumerState<Cart> {
                               ClipRRect(
                                 borderRadius:
                                     BorderRadiusDirectional.circular(10),
-                                child: Image.network(
-                                  dataYourCarts[index].thumbnail,
+                                child: CachedNetworkImage(
+                                  imageUrl: dataYourCarts[index].thumbnail,
+                                  progressIndicatorBuilder:
+                                      (context, url, progress) =>
+                                          const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                   fit: BoxFit.cover,
                                   height: 100,
                                   width: 100,
