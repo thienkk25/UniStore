@@ -112,7 +112,9 @@ class _ExploreViewState extends State<ExploreView> {
                                       ],
                                     ),
                                     Text(
-                                      dataChat[index]['createAt'],
+                                      dataChat[index]['createAt']
+                                          .toString()
+                                          .substring(0, 10),
                                       style: TextStyle(
                                           fontSize: 8, color: Colors.grey[500]),
                                     )

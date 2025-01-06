@@ -239,7 +239,10 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                     });
                                                   },
                                                   selectedColor: Colors.orange,
-                                                  label: Text(types[index]),
+                                                  label: Text(types[index][0]
+                                                          .toUpperCase() +
+                                                      types[index]
+                                                          .substring(1)),
                                                   labelStyle: TextStyle(
                                                       color:
                                                           isCheckedFilter[index]
@@ -335,7 +338,8 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                               : Colors.grey[300],
                                         ),
                                         child: Text(
-                                          types[index],
+                                          types[index][0].toUpperCase() +
+                                              types[index].substring(1),
                                           style: TextStyle(
                                             color: selectedIndexType == index &&
                                                     !isFilter
@@ -967,9 +971,7 @@ class _HomeclientState extends ConsumerState<Homeclient> {
       isCheckedFilter = List.generate(types.length, (index) => false);
       isFilter = false;
     });
-    List<Product> dataProductFilter = [];
-
-    dataProductFilter = dataProduct
+    List<Product> dataProductFilter = dataProduct
         .where((element) => element.category == types[index])
         .toList();
 
@@ -995,7 +997,6 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                   if (isCheckedFilter[index]) {
                     return types[index];
                   }
-                  return null; // Return null for unchecked filters
                 })
                     .where((category) => category != null)
                     .contains(element.category))

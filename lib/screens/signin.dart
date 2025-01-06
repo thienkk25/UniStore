@@ -23,7 +23,7 @@ class _SigninState extends ConsumerState<Signin> {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-  late bool checkboxValue;
+  bool checkboxValue = false;
   @override
   void initState() {
     loadCredentials();
