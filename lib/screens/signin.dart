@@ -6,6 +6,7 @@ import 'package:shop_fashion/custom/text_form_field_view.dart';
 import 'package:shop_fashion/screens/forgot.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends ConsumerStatefulWidget {
   const Signin({super.key});
@@ -22,7 +23,31 @@ class _SigninState extends ConsumerState<Signin> {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-  bool checkboxValue = false;
+  late bool checkboxValue;
+  @override
+  void initState() {
+    loadCredentials();
+    super.initState();
+  }
+
+  Future<void> saveCredentials(String username, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+    await prefs.setString('password', password);
+    await prefs.setBool('checkboxValue', true);
+  }
+
+  Future<void> loadCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    final username = prefs.getString('username') ?? '';
+    final password = prefs.getString('password') ?? '';
+    final checkBox = prefs.getBool('checkboxValue') ?? false;
+    setState(() {
+      emailController.text = username;
+      pwController.text = password;
+      checkboxValue = checkBox;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -250,6 +275,9 @@ class _SigninState extends ConsumerState<Signin> {
 
   void signIn() async {
     if (_keyForm.currentState!.validate()) {
+      if (checkboxValue) {
+        saveCredentials(emailController.text, pwController.text);
+      }
       showDialog(
         context: context,
         builder: (context) => const Center(
