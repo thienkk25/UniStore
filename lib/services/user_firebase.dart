@@ -56,4 +56,13 @@ class UserFirebase {
   User? getInforUserAuth() {
     return auth.currentUser;
   }
+
+  bool checksessionUser() {
+    User? user = auth.currentUser;
+    if (user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

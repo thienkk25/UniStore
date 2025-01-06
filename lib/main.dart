@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shop_fashion/firebase_options.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/welcome.dart';
+import 'package:shop_fashion/services/user_firebase.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,12 +30,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checksessionUser() {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      sessionUser = true;
-    } else {
-      sessionUser = false;
-    }
+    bool user = UserFirebase().checksessionUser();
+    sessionUser = user;
   }
 
   @override
