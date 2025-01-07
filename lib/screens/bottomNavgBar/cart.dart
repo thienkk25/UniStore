@@ -58,6 +58,7 @@ class _CartState extends ConsumerState<Cart> {
               builder: (context, constraints) {
                 if (constraints.maxWidth < 330) {
                   return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: dataYourCarts.length,
                       itemBuilder: (context, index) {

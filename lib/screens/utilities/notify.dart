@@ -44,6 +44,7 @@ class Notify extends ConsumerWidget {
               ),
             ),
             ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: dataNotify.length,
               itemBuilder: (context, index) {

@@ -150,7 +150,7 @@ class _Whilist extends ConsumerState<Wishlist> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
-                            mainAxisExtent: 230),
+                            mainAxisExtent: 260),
                     itemCount: favoriteProducts.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
@@ -226,8 +226,8 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   ],
                                 ),
                                 Positioned(
-                                  right: 0,
-                                  bottom: 0,
+                                  right: -10,
+                                  bottom: -10,
                                   child: TextButton(
                                     onPressed: () {
                                       deleteFavorite(favoriteProducts[index].id,

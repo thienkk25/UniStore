@@ -181,7 +181,7 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                                   "\$ ${widget.data.price}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 14),
                                   textAlign: TextAlign.end,
                                 ),
                               ],
