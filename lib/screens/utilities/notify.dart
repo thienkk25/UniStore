@@ -51,7 +51,7 @@ class Notify extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Card(
                     child: Container(
-                      height: 40,
+                      height: 50,
                       margin:
                           const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                       child: Column(
@@ -64,6 +64,8 @@ class Notify extends ConsumerWidget {
                           Text(
                             dataNotify[index],
                             style: TextStyle(color: Colors.grey[600]),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
