@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/main.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 import 'package:shop_fashion/services/user_firebase.dart';
 
@@ -277,7 +276,7 @@ class _ProfileState extends State<Profile> {
     if (result == "Exit success") {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => const MyApp(),
+          builder: (context) => const Welcome(),
         ),
         (route) => false,
       );
