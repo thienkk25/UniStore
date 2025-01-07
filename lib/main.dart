@@ -40,11 +40,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: sessionUser ? const Home() : const Welcome(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: sessionUser ? const Home() : const Welcome(),
     );
   }
 }
