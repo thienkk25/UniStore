@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.4.1
   firebase_database: ^11.2.0
   shared_preferences: ^2.3.5
+  flutter_stripe: ^11.3.0
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/services/notify_service.dart';
 import 'package:shop_fashion/services/riverpod_home_view.dart';
+import 'package:shop_fashion/services/stripe_service.dart';
 
 import '../../services/riverpod_product.dart';
 
@@ -671,7 +672,12 @@ class _CartState extends ConsumerState<Cart> {
                     child: SizedBox(
                       height: 40,
                       width: double.infinity,
-                      child: ButtonView(text: "Checkout", voidCallback: () {}),
+                      child: ButtonView(
+                          text: "Checkout",
+                          voidCallback: () {
+                            checkOutCart();
+                            // StripeService().makePayment(totalProduct);
+                          }),
                     ),
                   ),
                 ],
@@ -737,5 +743,21 @@ class _CartState extends ConsumerState<Cart> {
     });
     discountProduct = 0;
     totalProduct = subTotalProduct + discountProduct;
+  }
+
+  void checkOutCart() async {
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      ),
+    );
+    final result = await StripeService().makePayment(totalProduct);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
   }
 }
