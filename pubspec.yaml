@@ -1,5 +1,5 @@
 name: shop_fashion
-description: "A new Flutter project."
+description: "A App Flutter project About Shopcart"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -46,6 +46,7 @@ dependencies:
   firebase_database: ^11.2.0
   shared_preferences: ^2.3.5
   flutter_stripe: ^11.3.0
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +101,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  min_sdk_android: 23
