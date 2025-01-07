@@ -63,7 +63,7 @@ class StripeService {
         },
       );
       return "Success payment";
-    } on StripeException catch (e) {
+    } on StripeException {
       return "Cancel payment";
     } catch (e) {
       return "Error";
