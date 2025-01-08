@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ExploreService {
-  final fireDatabase = FirebaseDatabase.instance;
-  final auth = FirebaseAuth.instance;
-
   Stream<List> realTimeChat() {
+    final fireDatabase = FirebaseDatabase.instance;
+
     return fireDatabase.ref('realTimeChat').onValue.map((event) {
       final dataMap = event.snapshot.value;
 
@@ -20,6 +19,8 @@ class ExploreService {
   }
 
   void sendRealTimeChat(String message) {
+    final fireDatabase = FirebaseDatabase.instance;
+    final auth = FirebaseAuth.instance;
     User user = auth.currentUser!;
     fireDatabase.ref('realTimeChat').push().set({
       "name": user.displayName ?? "Private",

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,7 +7,6 @@ import 'package:shop_fashion/firebase_options.dart';
 import 'package:shop_fashion/keys.dart';
 import 'package:shop_fashion/screens/home.dart';
 import 'package:shop_fashion/screens/welcome.dart';
-import 'package:shop_fashion/services/user_firebase.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,17 +15,17 @@ Future<void> main() async {
   );
   Stripe.publishableKey = stripePublishableKey;
   await Stripe.instance.applySettings();
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyApp> createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   late bool sessionUser;
   @override
   void initState() {
@@ -34,15 +34,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checksessionUser() {
-    bool user = UserFirebase().checksessionUser();
-    sessionUser = user;
+    sessionUser = FirebaseAuth.instance.currentUser != null ? true : false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: sessionUser ? const Home() : const Welcome(),
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: sessionUser ? const Home() : const Welcome(),
+      ),
     );
   }
 }

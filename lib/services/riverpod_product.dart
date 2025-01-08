@@ -12,9 +12,7 @@ import 'package:http/http.dart' as http;
 final currentPageProductProvider = StateProvider<int>((ref) => 0);
 final isLoadingProvider = StateProvider<bool>((ref) => false);
 final isLoadingMoreProvider = StateProvider<bool>((ref) => false);
-final firestore = FirebaseFirestore.instance;
-final auth = FirebaseAuth.instance;
-String userId = auth.currentUser!.uid;
+
 Future<List<Product>> fetchDataProduct() async {
   try {
     final url = Uri.parse("https://dummyjson.com/products?limit=194");
@@ -120,6 +118,9 @@ final dataUriProductProvider =
 });
 
 Future<List> fetchCartProduct() async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
@@ -160,6 +161,9 @@ final cartProductNotifierProvider =
         (ref) => CartProductNotifier());
 
 Future<String> addCartProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
@@ -201,6 +205,9 @@ Future<String> addCartProduct(int id) async {
 }
 
 Future<String> deleteCartProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userCarts").doc(userId).get();
@@ -298,6 +305,9 @@ final textEditingControllerYourCartsProvider = StateNotifierProvider<
     List<TextEditingController>>((ref) => TextEditingControllerYourCarts());
 
 Future<List> fetchFavoriteProduct() async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
@@ -338,6 +348,9 @@ final favoriteProductNotifierProvider =
         (ref) => FavoriteProductNotifier());
 
 Future<String> addFavoriteProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
@@ -379,6 +392,9 @@ Future<String> addFavoriteProduct(int id) async {
 }
 
 Future<String> deleteFavoriteProduct(int id) async {
+  final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  String userId = auth.currentUser!.uid;
   try {
     DocumentSnapshot cartDoc =
         await firestore.collection("userFavorites").doc(userId).get();
