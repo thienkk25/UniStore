@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/models/product_model.dart';
@@ -113,9 +114,13 @@ class _CartState extends ConsumerState<Cart> {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             dataYourCarts[index].thumbnail,
-                                        progressIndicatorBuilder: (context, url,
-                                                progress) =>
-                                            const CircularProgressIndicator(),
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                Lottie.asset(
+                                                    "/lotties/loading.json",
+                                                    height: 100,
+                                                    width: 100,
+                                                    fit: BoxFit.contain),
                                         errorWidget: (context, url, error) =>
                                             const Icon(Icons.error),
                                         fit: BoxFit.cover,
@@ -384,7 +389,11 @@ class _CartState extends ConsumerState<Cart> {
                                       imageUrl: dataYourCarts[index].thumbnail,
                                       progressIndicatorBuilder:
                                           (context, url, progress) =>
-                                              const CircularProgressIndicator(),
+                                              Lottie.asset(
+                                                  "assets/lotties/loading.json",
+                                                  height: 100,
+                                                  width: 100,
+                                                  fit: BoxFit.contain),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
@@ -696,11 +705,11 @@ class _CartState extends ConsumerState<Cart> {
 
   Future<void> deleteCart(int id, int index) async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("assets/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
     Product dataTemporary = dataYourCarts[index];
@@ -748,17 +757,62 @@ class _CartState extends ConsumerState<Cart> {
 
   void checkOutCart() async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("assets/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
+
     final result = await StripeService().makePayment(totalProduct);
 
     if (!mounted) return;
     Navigator.of(context).pop();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+    if (result == "Success payment") {
+      showDialog(
+        barrierColor: Colors.amber[50],
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Lottie.asset("assets/lotties/success.json",
+                  repeat: false, height: 100, width: 100, fit: BoxFit.contain),
+            ),
+            Text(
+              result,
+              style: const TextStyle(color: Colors.orange),
+            ),
+          ],
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    } else {
+      showDialog(
+        barrierColor: Colors.amber[50],
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Lottie.asset("assets/lotties/error.json",
+                  repeat: false, height: 100, width: 100, fit: BoxFit.contain),
+            ),
+            Text(
+              result,
+              style: const TextStyle(color: Colors.orange),
+            ),
+          ],
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
   }
 }

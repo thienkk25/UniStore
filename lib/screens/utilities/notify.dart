@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shop_fashion/services/notify_service.dart';
 
 class Notify extends ConsumerWidget {
@@ -52,7 +53,6 @@ class Notify extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Card(
                     child: Container(
-                      height: 50,
                       margin:
                           const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                       child: Column(
@@ -62,11 +62,20 @@ class Notify extends ConsumerWidget {
                             "Thông báo",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text(
+                          ReadMoreText(
                             dataNotify[index],
-                            style: TextStyle(color: Colors.grey[600]),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: Colors.grey),
+                            trimMode: TrimMode.Line,
+                            trimLines: 2,
+                            colorClickableText: Colors.black,
+                            trimCollapsedText: 'Show more',
+                            trimExpandedText: 'Show less',
+                            moreStyle: const TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold),
+                            lessStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

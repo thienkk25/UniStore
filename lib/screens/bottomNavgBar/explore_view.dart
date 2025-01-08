@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/services/explore_service.dart';
 
@@ -82,7 +83,10 @@ class _ExploreViewState extends State<ExploreView> {
                   stream: ExploreService().realTimeChat(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(
+                        child: Lottie.asset("assets/lotties/loading.json",
+                            height: 100, width: 100, fit: BoxFit.contain),
+                      );
                     } else if (snapshot.hasError) {
                       return const Center(
                         child: Text("Error"),

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/main.dart';
 import 'package:shop_fashion/screens/welcome.dart';
 import 'package:shop_fashion/services/riverpod_home_view.dart';
 import 'package:shop_fashion/services/user_firebase.dart';
@@ -264,11 +264,11 @@ class _ProfileState extends ConsumerState<Profile> {
 
   void logOut() async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
     final UserController userController = UserController();

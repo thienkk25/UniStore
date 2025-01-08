@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/screens/signin.dart';
 
@@ -26,7 +27,7 @@ class _WelcomeState extends State<Welcome> {
         imagePath.length,
         (index) => Image.asset(
               imagePath[index],
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
             ));
   }
 
@@ -46,35 +47,38 @@ class _WelcomeState extends State<Welcome> {
         body: Column(
       children: [
         SizedBox(
-            height: availableHeight / 3.8,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "SHOP",
+          height: availableHeight / 3.8,
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "SHOP",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold),
+              ),
+              RichText(
+                text: const TextSpan(
                   style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.orange,
-                      fontWeight: FontWeight.bold),
+                      color: Colors.black, fontSize: 16), // Kiểu chữ chung
+                  children: [
+                    TextSpan(text: 'Welcome to '),
+                    TextSpan(
+                      text: 'Shop',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold), // In đậm chữ "Shop"
+                    ),
+                    TextSpan(text: ", Let's shop!"),
+                  ],
                 ),
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 16), // Kiểu chữ chung
-                    children: [
-                      TextSpan(text: 'Welcome to '),
-                      TextSpan(
-                        text: 'Shop',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold), // In đậm chữ "Shop"
-                      ),
-                      TextSpan(text: ", Let's shop!"),
-                    ],
-                  ),
-                )
-              ],
-            )),
+              ),
+              Lottie.asset("assets/lotties/welcome.json",
+                  height: 50, fit: BoxFit.cover)
+            ],
+          ),
+        ),
         SizedBox(
             height: (availableHeight - (availableHeight / 3.8)) / 1.3,
             width: double.infinity,

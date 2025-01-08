@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/user_controller.dart';
 import 'package:shop_fashion/custom/button_view.dart';
 import 'package:shop_fashion/custom/text_form_field_view.dart';
@@ -279,11 +280,11 @@ class _SigninState extends ConsumerState<Signin> {
         saveCredentials(emailController.text, pwController.text);
       }
       showDialog(
+        barrierDismissible: false,
         context: context,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(
-            color: Colors.orange,
-          ),
+        builder: (context) => Center(
+          child: Lottie.asset("assets/lotties/loading.json",
+              height: 100, width: 100, fit: BoxFit.contain),
         ),
       );
       final UserController userController = UserController();

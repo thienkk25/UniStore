@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 
@@ -73,7 +74,8 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                         child: CachedNetworkImage(
                           imageUrl: widget.data.images[index],
                           progressIndicatorBuilder: (context, url, progress) =>
-                              const CircularProgressIndicator(),
+                              Lottie.asset("assets/lotties/loading.json",
+                                  height: 100, width: 100, fit: BoxFit.contain),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           fit: BoxFit.cover,
@@ -165,26 +167,28 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                           ),
                           Expanded(
                             flex: 1,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "\$ ${((widget.data.price) / (1 - widget.data.discountPercentage / 100)).toStringAsFixed(2)}",
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "\$ ${widget.data.price}",
-                                  style: const TextStyle(
+                            child: FittedBox(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "\$ ${((widget.data.price) / (1 - widget.data.discountPercentage / 100)).toStringAsFixed(2)}",
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "\$ ${widget.data.price}",
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -302,30 +306,34 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
 
   Future<void> addToCart() async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("assets/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
-    ref
-        .read(cartProductNotifierProvider.notifier)
-        .addStateCartProduct(widget.data);
-    ref
-        .read(textEditingControllerYourCartsProvider.notifier)
-        .addStateTextEditingControllerYourCarts(
-            ref.watch(quantityProvider).toString());
-    ref.read(checkBoxYourCartsProvider.notifier).addStatecheckBoxYourCarts();
-    ref.read(badgeCartProvider.notifier).state++;
-    ref.read(quantityProvider.notifier).state = 1;
+
     final result = await ref
         .watch(productControllerProvider)
         .addCartProductController(widget.data.id);
-    ref
-        .read(notifyNotifierProvider.notifier)
-        .addSetState("$result ${widget.data.title}");
-    ref.read(badgeNotifyProvider.notifier).state++;
+    if (result == "Add Success") {
+      ref
+          .read(cartProductNotifierProvider.notifier)
+          .addStateCartProduct(widget.data);
+      ref
+          .read(textEditingControllerYourCartsProvider.notifier)
+          .addStateTextEditingControllerYourCarts(
+              ref.watch(quantityProvider).toString());
+      ref.read(checkBoxYourCartsProvider.notifier).addStatecheckBoxYourCarts();
+      ref.read(quantityProvider.notifier).state = 1;
+      ref.read(badgeCartProvider.notifier).state++;
+      ref
+          .read(notifyNotifierProvider.notifier)
+          .addSetState("$result ${widget.data.title}");
+      ref.read(badgeNotifyProvider.notifier).state++;
+    }
+
     if (!mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
@@ -333,11 +341,11 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
 
   Future<void> addFavorite() async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("assets/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
     ref
@@ -347,7 +355,7 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
     final result = await ref
         .watch(productControllerProvider)
         .addFavoriteProductController(widget.data.id);
-    if (result != "Favorite already in the data") {
+    if (result == "Favorite Success") {
       ref.read(badgeFavoriteProvider.notifier).state++;
       ref
           .read(notifyNotifierProvider.notifier)
@@ -405,7 +413,8 @@ class _ImageViewerPageState extends State<ImageViewerPage> {
               child: CachedNetworkImage(
                 imageUrl: widget.imageProduct[index],
                 progressIndicatorBuilder: (context, url, progress) =>
-                    const CircularProgressIndicator(),
+                    Lottie.asset("assets/lotties/loading.json",
+                        height: 100, width: 100, fit: BoxFit.contain),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 fit: BoxFit.cover,
               ),
@@ -595,6 +604,7 @@ class _PageTwoSupportState extends State<PageTwoSupport> {
           ],
         ),
         ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: 3,
           itemBuilder: (context, index) => ListTile(

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
@@ -90,7 +91,11 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       imageUrl: searchList[index].thumbnail,
                                       progressIndicatorBuilder:
                                           (context, url, progress) =>
-                                              const CircularProgressIndicator(),
+                                              Lottie.asset(
+                                                  "assets/lotties/loading.json",
+                                                  height: 100,
+                                                  width: 100,
+                                                  fit: BoxFit.contain),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
@@ -175,9 +180,13 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             favoriteProducts[index].thumbnail,
-                                        progressIndicatorBuilder: (context, url,
-                                                progress) =>
-                                            const CircularProgressIndicator(),
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                Lottie.asset(
+                                                    "/lotties/loading.json",
+                                                    height: 100,
+                                                    width: 100,
+                                                    fit: BoxFit.contain),
                                         errorWidget: (context, url, error) =>
                                             const Icon(Icons.error),
                                         height: 100,
@@ -226,17 +235,18 @@ class _Whilist extends ConsumerState<Wishlist> {
                                   ],
                                 ),
                                 Positioned(
-                                  right: -10,
-                                  bottom: -10,
+                                  right: 0,
+                                  bottom: 0,
                                   child: TextButton(
                                     onPressed: () {
                                       deleteFavorite(favoriteProducts[index].id,
                                           favoriteProducts[index]);
                                     },
-                                    child: const Text(
-                                      "Unfavorite",
-                                      style: TextStyle(color: Colors.orange),
-                                    ),
+                                    child: Lottie.asset(
+                                        "assets/lotties/delete.json",
+                                        height: 30,
+                                        width: 30,
+                                        fit: BoxFit.contain),
                                   ),
                                 )
                               ],
@@ -278,9 +288,13 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             favoriteProducts[index].thumbnail,
-                                        progressIndicatorBuilder: (context, url,
-                                                progress) =>
-                                            const CircularProgressIndicator(),
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                Lottie.asset(
+                                                    "/lotties/loading.json",
+                                                    height: 100,
+                                                    width: 100,
+                                                    fit: BoxFit.contain),
                                         errorWidget: (context, url, error) =>
                                             const Icon(Icons.error),
                                         height: 100,
@@ -332,10 +346,11 @@ class _Whilist extends ConsumerState<Wishlist> {
                                       deleteFavorite(favoriteProducts[index].id,
                                           favoriteProducts[index]);
                                     },
-                                    child: const Text(
-                                      "Unfavorite",
-                                      style: TextStyle(color: Colors.orange),
-                                    ),
+                                    child: Lottie.asset(
+                                        "assets/lotties/delete.json",
+                                        height: 30,
+                                        width: 30,
+                                        fit: BoxFit.contain),
                                   ),
                                 )
                               ],
@@ -356,11 +371,11 @@ class _Whilist extends ConsumerState<Wishlist> {
 
   Future<void> deleteFavorite(int id, Product product) async {
     showDialog(
+      barrierDismissible: false,
       context: context,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(
-          color: Colors.orange,
-        ),
+      builder: (context) => Center(
+        child: Lottie.asset("assets/lotties/loading.json",
+            height: 100, width: 100, fit: BoxFit.contain),
       ),
     );
     ref

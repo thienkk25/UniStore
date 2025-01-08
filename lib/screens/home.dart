@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/Cart.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/explore_view.dart';
 import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
@@ -38,44 +39,32 @@ class _HomeState extends ConsumerState<Home> {
         },
         destinations: [
           NavigationDestination(
-              icon: Icon(
-                Icons.home,
-                color: selectIndex == 0 ? Colors.orange : Colors.black,
-              ),
+              icon: Lottie.asset("assets/lotties/home.json",
+                  height: 30, width: 30, fit: BoxFit.contain),
               label: "Home"),
           NavigationDestination(
-              icon: Icon(
-                Icons.explore_outlined,
-                color: selectIndex == 1 ? Colors.orange : Colors.black,
-              ),
+              icon: Lottie.asset("assets/lotties/globe.json",
+                  height: 30, width: 30, fit: BoxFit.contain),
               label: "Explore"),
           NavigationDestination(
               icon: ref.watch(badgeCartProvider) != 0
                   ? Badge(
                       label: Text(ref.watch(badgeCartProvider).toString()),
-                      child: Icon(
-                        Icons.shopping_bag_outlined,
-                        color: selectIndex == 2 ? Colors.orange : Colors.black,
-                      ),
+                      child: Lottie.asset("assets/lotties/cart.json",
+                          height: 30, width: 30, fit: BoxFit.contain),
                     )
-                  : Icon(
-                      Icons.shopping_bag_outlined,
-                      color: selectIndex == 2 ? Colors.orange : Colors.black,
-                    ),
+                  : Lottie.asset("assets/lotties/cart.json",
+                      height: 30, width: 30, fit: BoxFit.contain),
               label: "Cart"),
           NavigationDestination(
               icon: ref.watch(badgeFavoriteProvider) != 0
                   ? Badge(
                       label: Text(ref.watch(badgeFavoriteProvider).toString()),
-                      child: Icon(
-                        Icons.favorite_border_outlined,
-                        color: selectIndex == 3 ? Colors.orange : Colors.black,
-                      ),
+                      child: Lottie.asset("assets/lotties/heart.json",
+                          height: 30, width: 30, fit: BoxFit.contain),
                     )
-                  : Icon(
-                      Icons.favorite_border_outlined,
-                      color: selectIndex == 3 ? Colors.orange : Colors.black,
-                    ),
+                  : Lottie.asset("assets/lotties/heart.json",
+                      height: 30, width: 30, fit: BoxFit.contain),
               label: "Wishlist"),
         ],
       ),

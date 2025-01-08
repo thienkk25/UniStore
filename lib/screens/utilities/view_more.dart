@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
 
@@ -79,8 +80,11 @@ class ViewMore extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: data[index].thumbnail,
                               progressIndicatorBuilder:
-                                  (context, url, progress) =>
-                                      const CircularProgressIndicator(),
+                                  (context, url, progress) => Lottie.asset(
+                                      "/lotties/loading.json",
+                                      height: 100,
+                                      width: 100,
+                                      fit: BoxFit.contain),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                               height: 100,

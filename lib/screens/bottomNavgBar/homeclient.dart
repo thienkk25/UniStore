@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shop_fashion/controllers/product_controller.dart';
 import 'package:shop_fashion/models/product_model.dart';
 import 'package:shop_fashion/screens/utilities/info_product.dart';
@@ -86,10 +87,12 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                   searchController: searchController,
                   builder: (context, controller) {
                     return IconButton(
-                        onPressed: () {
-                          controller.openView();
-                        },
-                        icon: const Icon(Icons.search));
+                      onPressed: () {
+                        controller.openView();
+                      },
+                      icon: Lottie.asset("assets/lotties/search.json",
+                          height: 30, width: 30, fit: BoxFit.contain),
+                    );
                   },
                   suggestionsBuilder: (context, controller) {
                     final String data = controller.text.toLowerCase();
@@ -116,7 +119,11 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                       imageUrl: searchList[index].thumbnail,
                                       progressIndicatorBuilder:
                                           (context, url, progress) =>
-                                              const CircularProgressIndicator(),
+                                              Lottie.asset(
+                                                  "assets/lotties/loading.json",
+                                                  height: 100,
+                                                  width: 100,
+                                                  fit: BoxFit.contain),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
@@ -168,8 +175,14 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                       ? Badge(
                           label:
                               Text(ref.watch(badgeNotifyProvider).toString()),
-                          child: const Icon(Icons.notifications))
-                      : const Icon(Icons.notifications),
+                          child: Lottie.asset(
+                              "assets/lotties/notification.json",
+                              height: 30,
+                              width: 30,
+                              fit: BoxFit.contain),
+                        )
+                      : Lottie.asset("assets/lotties/notification.json",
+                          height: 30, width: 30, fit: BoxFit.contain),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -178,13 +191,15 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                   },
                 ),
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Profile()));
-                    },
-                    icon: const Icon(Icons.account_box_rounded))
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Profile()));
+                  },
+                  icon: Lottie.asset("assets/lotties/user_profile.json",
+                      height: 30, width: 30, fit: BoxFit.contain),
+                )
               ],
             ),
             body: SingleChildScrollView(
@@ -294,10 +309,10 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.filter_alt_outlined,
-                                      color: isFilter
-                                          ? Colors.white
-                                          : Colors.black),
+                                  Lottie.asset("assets/lotties/filter.json",
+                                      height: 30,
+                                      width: 30,
+                                      fit: BoxFit.contain),
                                   Text(
                                     "Filter",
                                     style: TextStyle(
@@ -412,7 +427,11 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   specialOffer.first.thumbnail,
                                               progressIndicatorBuilder: (context,
                                                       url, progress) =>
-                                                  const CircularProgressIndicator(),
+                                                  Lottie.asset(
+                                                      "assets/lotties/loading.json",
+                                                      height: 100,
+                                                      width: 100,
+                                                      fit: BoxFit.contain),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       const Icon(Icons.error),
@@ -473,10 +492,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                   )),
                             ),
                         error: (error, stackTrace) => const Text("Error"),
-                        loading: () => const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.orange,
-                              ),
+                        loading: () => Center(
+                              child: Lottie.asset("assets/lotties/loading.json",
+                                  height: 100, width: 100, fit: BoxFit.contain),
                             )),
                     const SizedBox(
                       height: 20,
@@ -543,7 +561,11 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   .thumbnail,
                                               progressIndicatorBuilder: (context,
                                                       url, progress) =>
-                                                  const CircularProgressIndicator(),
+                                                  Lottie.asset(
+                                                      "assets/lotties/loading.json",
+                                                      height: 100,
+                                                      width: 100,
+                                                      fit: BoxFit.contain),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       const Icon(Icons.error),
@@ -614,10 +636,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                       error: (error, stackTrace) => const Center(
                         child: Text("Error"),
                       ),
-                      loading: () => const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.orange,
-                        ),
+                      loading: () => Center(
+                        child: Lottie.asset("assets/lotties/loading.json",
+                            height: 100, width: 100, fit: BoxFit.contain),
                       ),
                     ),
                     const SizedBox(
@@ -684,7 +705,12 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   progressIndicatorBuilder:
                                                       (context, url,
                                                               progress) =>
-                                                          const CircularProgressIndicator(),
+                                                          Lottie.asset(
+                                                              "assets/lotties/loading.json",
+                                                              height: 100,
+                                                              width: 100,
+                                                              fit: BoxFit
+                                                                  .contain),
                                                   errorWidget: (context, url,
                                                           error) =>
                                                       const Icon(Icons.error),
@@ -728,10 +754,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                         error: (error, stackTrace) => const Center(
                               child: Text("Error"),
                             ),
-                        loading: () => const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.orange,
-                              ),
+                        loading: () => Center(
+                              child: Lottie.asset("assets/lotties/loading.json",
+                                  height: 100, width: 100, fit: BoxFit.contain),
                             )),
                     const SizedBox(
                       height: 20,
@@ -745,10 +770,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                       height: 20,
                     ),
                     ref.watch(isLoadingProvider)
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.orange,
-                            ),
+                        ? Center(
+                            child: Lottie.asset("assets/lotties/loading.json",
+                                height: 100, width: 100, fit: BoxFit.contain),
                           )
                         : LayoutBuilder(
                             builder: (context, constraints) {
@@ -790,7 +814,12 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   progressIndicatorBuilder:
                                                       (context, url,
                                                               progress) =>
-                                                          const CircularProgressIndicator(),
+                                                          Lottie.asset(
+                                                              "assets/lotties/loading.json",
+                                                              height: 100,
+                                                              width: 100,
+                                                              fit: BoxFit
+                                                                  .contain),
                                                   errorWidget: (context, url,
                                                           error) =>
                                                       const Icon(Icons.error),
@@ -886,7 +915,12 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                                   progressIndicatorBuilder:
                                                       (context, url,
                                                               progress) =>
-                                                          const CircularProgressIndicator(),
+                                                          Lottie.asset(
+                                                              "assets/lotties/loading.json",
+                                                              height: 100,
+                                                              width: 100,
+                                                              fit: BoxFit
+                                                                  .contain),
                                                   errorWidget: (context, url,
                                                           error) =>
                                                       const Icon(Icons.error),
@@ -947,10 +981,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                       Container(
                         margin: const EdgeInsetsDirectional.only(
                             top: 20, bottom: 20),
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.orange,
-                          ),
+                        child: Center(
+                          child: Lottie.asset("assets/lotties/loading.json",
+                              height: 100, width: 100, fit: BoxFit.contain),
                         ),
                       )
                   ],
@@ -958,10 +991,9 @@ class _HomeclientState extends ConsumerState<Homeclient> {
               ),
             ),
           )
-        : const Center(
-            child: CircularProgressIndicator(
-              color: Colors.orange,
-            ),
+        : Center(
+            child: Lottie.asset("assets/lotties/loading.json",
+                height: 100, width: 100, fit: BoxFit.contain),
           );
   }
 
