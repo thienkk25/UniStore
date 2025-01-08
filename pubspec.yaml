@@ -1,8 +1,6 @@
 name: shop_fashion
 description: "A App Flutter project About Shopcart"
 # The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -46,6 +44,7 @@ dependencies:
   firebase_database: ^11.2.0
   shared_preferences: ^2.3.5
   flutter_stripe: ^11.3.0
+  lottie: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +73,7 @@ flutter:
   assets:
     - assets/screens/
     - assets/icons/
+    - assets/lotties/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
