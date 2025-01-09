@@ -87,11 +87,10 @@ class _InfoProductState extends ConsumerState<InfoProduct> {
                     top: 30,
                     left: 10,
                     child: InkWell(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: const Icon(
-                          Icons.arrow_back,
-                          size: 30,
-                        )),
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Lottie.asset("assets/lotties/arrow_left.json",
+                          width: 30, height: 30, fit: BoxFit.contain),
+                    ),
                   ),
                   Positioned(
                       right: 0,

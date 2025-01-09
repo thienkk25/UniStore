@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shop_fashion/services/notify_service.dart';
 
@@ -27,11 +28,10 @@ class Notify extends ConsumerWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: InkWell(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: const Icon(
-                            Icons.chevron_left_outlined,
-                            size: 30,
-                          )),
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Lottie.asset("assets/lotties/arrow_left.json",
+                            width: 30, height: 30, fit: BoxFit.contain),
+                      ),
                     ),
                     Container(
                       alignment: Alignment.center,

@@ -34,11 +34,10 @@ class ViewMore extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   child: InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: const Icon(
-                        Icons.chevron_left_outlined,
-                        size: 30,
-                      )),
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Lottie.asset("assets/lotties/arrow_left.json",
+                        width: 30, height: 30, fit: BoxFit.contain),
+                  ),
                 ),
                 Container(
                   alignment: Alignment.center,

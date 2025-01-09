@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,8 +48,18 @@ class _ProfileState extends ConsumerState<Profile> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       clipBehavior: Clip.antiAlias,
-                      child: Image.asset(
-                        dataInforUser!.photoURL ??
+                      child: CachedNetworkImage(
+                        progressIndicatorBuilder: (context, url, progress) =>
+                            Center(
+                          child: Lottie.asset("assets/lotties/loading.json",
+                              width: 30, height: 30, fit: BoxFit.contain),
+                        ),
+                        errorWidget: (context, url, error) => Lottie.asset(
+                            "assets/lotties/error.json",
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.contain),
+                        imageUrl: dataInforUser!.photoURL ??
                             "assets/screens/avatar_default.png",
                         fit: BoxFit.cover,
                       ),
@@ -58,11 +69,10 @@ class _ProfileState extends ConsumerState<Profile> {
                 top: 30,
                 left: 10,
                 child: InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                    )),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Lottie.asset("assets/lotties/arrow_left.json",
+                      width: 30, height: 30, fit: BoxFit.contain),
+                ),
               ),
             ],
           ),
@@ -80,10 +90,11 @@ class _ProfileState extends ConsumerState<Profile> {
           Card(
             child: InkWell(
               onTap: () {},
-              child: const ListTile(
-                leading: Icon(Icons.manage_accounts),
-                trailing: Icon(Icons.chevron_right),
-                title: Text("My Profile"),
+              child: ListTile(
+                leading: Lottie.asset("assets/lotties/setup.json",
+                    width: 30, height: 30, fit: BoxFit.contain),
+                trailing: const Icon(Icons.chevron_right),
+                title: const Text("My Profile"),
               ),
             ),
           ),
@@ -195,10 +206,11 @@ class _ProfileState extends ConsumerState<Profile> {
                   },
                 );
               },
-              child: const ListTile(
-                leading: Icon(Icons.settings),
-                trailing: Icon(Icons.chevron_right),
-                title: Text("Settings"),
+              child: ListTile(
+                leading: Lottie.asset("assets/lotties/setting.json",
+                    width: 30, height: 30, fit: BoxFit.contain),
+                trailing: const Icon(Icons.chevron_right),
+                title: const Text("Settings"),
               ),
             ),
           ),
@@ -228,7 +240,8 @@ class _ProfileState extends ConsumerState<Profile> {
                 }
               },
               child: ListTile(
-                leading: const Icon(Icons.notifications),
+                leading: Lottie.asset("assets/lotties/notification.json",
+                    width: 30, height: 30, fit: BoxFit.contain),
                 title: const Text("Notification"),
                 trailing: Text(notification),
               ),
@@ -251,9 +264,10 @@ class _ProfileState extends ConsumerState<Profile> {
                           ],
                         ));
               },
-              child: const ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Log Out"),
+              child: ListTile(
+                leading: Lottie.asset("assets/lotties/exit.json",
+                    width: 30, height: 30, fit: BoxFit.contain),
+                title: const Text("Log Out"),
               ),
             ),
           ),
