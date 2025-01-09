@@ -25,6 +25,8 @@ class _HomeclientState extends ConsumerState<Homeclient> {
   ScrollController scrollController = ScrollController();
   int? selectedIndexType;
   bool isFilter = false;
+  RangeValues rangeSliderValue = const RangeValues(0, 999999);
+  int? ratingFilter;
   List<String> types = TypesProduct().types;
   late List<bool> isCheckedFilter;
   @override
@@ -229,45 +231,237 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                   content: StatefulBuilder(
                                     builder: (BuildContext context,
                                         StateSetter setDialogState) {
-                                      return SizedBox(
-                                        height: 300,
-                                        width:
-                                            MediaQuery.of(context).size.width /
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 150,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
                                                 1.5,
-                                        child: SingleChildScrollView(
-                                          child: Wrap(
-                                            clipBehavior: Clip.antiAlias,
-                                            spacing: 5,
-                                            runSpacing: 5,
-                                            children: List.generate(
-                                              types.length,
-                                              (index) {
-                                                return FilterChip(
-                                                  side: const BorderSide(
-                                                      color: Colors.orange),
-                                                  selected:
-                                                      isCheckedFilter[index],
-                                                  onSelected: (bool value) {
-                                                    setDialogState(() {
-                                                      isCheckedFilter[index] =
-                                                          value;
-                                                    });
+                                            child: SingleChildScrollView(
+                                              child: Wrap(
+                                                clipBehavior: Clip.antiAlias,
+                                                spacing: 5,
+                                                runSpacing: 5,
+                                                children: List.generate(
+                                                  types.length,
+                                                  (index) {
+                                                    return FilterChip(
+                                                      side: const BorderSide(
+                                                          color: Colors.orange),
+                                                      selected: isCheckedFilter[
+                                                          index],
+                                                      onSelected: (bool value) {
+                                                        setDialogState(() {
+                                                          isCheckedFilter[
+                                                              index] = value;
+                                                        });
+                                                      },
+                                                      selectedColor:
+                                                          Colors.orange,
+                                                      label: Text(types[index]
+                                                                  [0]
+                                                              .toUpperCase() +
+                                                          types[index]
+                                                              .substring(1)),
+                                                      labelStyle: TextStyle(
+                                                          color:
+                                                              isCheckedFilter[
+                                                                      index]
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .orange),
+                                                    );
                                                   },
-                                                  selectedColor: Colors.orange,
-                                                  label: Text(types[index][0]
-                                                          .toUpperCase() +
-                                                      types[index]
-                                                          .substring(1)),
-                                                  labelStyle: TextStyle(
-                                                      color:
-                                                          isCheckedFilter[index]
-                                                              ? Colors.white
-                                                              : Colors.orange),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const Divider(
+                                            color: Colors.orange,
+                                            height: 20,
+                                            thickness: 1,
+                                          ),
+                                          Text(
+                                              "Paragraph range: \$ [${rangeSliderValue.start.toStringAsFixed(0)} - ${rangeSliderValue.end.toStringAsFixed(0)}]"),
+                                          SizedBox(
+                                            height: 50,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.5,
+                                            child: RangeSlider(
+                                              min: 0,
+                                              max: 999999,
+                                              labels: RangeLabels(
+                                                rangeSliderValue.start
+                                                    .toStringAsFixed(0),
+                                                rangeSliderValue.end
+                                                    .toStringAsFixed(0),
+                                              ),
+                                              divisions: 5000,
+                                              values: rangeSliderValue,
+                                              onChanged: (value) {
+                                                setDialogState(
+                                                  () {
+                                                    rangeSliderValue = value;
+                                                  },
                                                 );
                                               },
                                             ),
                                           ),
-                                        ),
+                                          const Divider(
+                                            color: Colors.orange,
+                                            height: 20,
+                                            thickness: 1,
+                                          ),
+                                          ratingFilter == null
+                                              ? const Text("Rating: ")
+                                              : Row(
+                                                  children: [
+                                                    Text(
+                                                        "Rating: ${ratingFilter.toString()}"),
+                                                    const Icon(
+                                                      Icons.star,
+                                                      color: Colors.orange,
+                                                    ),
+                                                  ],
+                                                ),
+                                          InkWell(
+                                            onTap: () => setDialogState(
+                                              () => ratingFilter = 1,
+                                            ),
+                                            child: Icon(
+                                              Icons.star_border,
+                                              color: ratingFilter == 1
+                                                  ? Colors.orange
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => setDialogState(
+                                              () => ratingFilter = 2,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 2
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 2
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => setDialogState(
+                                              () => ratingFilter = 3,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 3
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 3
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 3
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => setDialogState(
+                                              () => ratingFilter = 4,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 4
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 4
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 4
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 4
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => setDialogState(
+                                              () => ratingFilter = 5,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 5
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 5
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 5
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 5
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                                Icon(
+                                                  Icons.star_border,
+                                                  color: ratingFilter == 5
+                                                      ? Colors.orange
+                                                      : Colors.black,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ),
@@ -556,21 +750,25 @@ class _HomeclientState extends ConsumerState<Homeclient> {
                                           ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              imageUrl: popularProducts[index]
-                                                  .thumbnail,
-                                              progressIndicatorBuilder: (context,
-                                                      url, progress) =>
-                                                  Lottie.asset(
+                                            child: Center(
+                                              child: CachedNetworkImage(
+                                                imageUrl: popularProducts[index]
+                                                    .thumbnail,
+                                                progressIndicatorBuilder:
+                                                    (context, url, progress) =>
+                                                        Center(
+                                                  child: Lottie.asset(
                                                       "assets/lotties/loading.json",
                                                       height: 100,
                                                       width: 100,
                                                       fit: BoxFit.contain),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      const Icon(Icons.error),
-                                              height: 150,
-                                              fit: BoxFit.cover,
+                                                ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                height: 150,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                           const SizedBox(height: 10),

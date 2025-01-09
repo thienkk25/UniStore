@@ -13,8 +13,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Stripe.publishableKey = stripePublishableKey;
-  await Stripe.instance.applySettings();
+  // Stripe.publishableKey = stripePublishableKey;
+  // await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 
