@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/services/explore_service.dart';
+import 'package:uni_store/controllers/user_controller.dart';
+import 'package:uni_store/services/explore_service.dart';
 
 class ExploreView extends StatefulWidget {
   const ExploreView({super.key});

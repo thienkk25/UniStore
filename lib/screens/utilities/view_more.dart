@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/screens/utilities/info_product.dart';
+import 'package:uni_store/models/product_model.dart';
+import 'package:uni_store/screens/utilities/info_product.dart';
 
 class ViewMore extends StatelessWidget {
   final String textTitileAppbar;

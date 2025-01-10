@@ -3,14 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/product_controller.dart';
-import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/screens/utilities/info_product.dart';
-import 'package:shop_fashion/screens/utilities/notify.dart';
-import 'package:shop_fashion/screens/utilities/profile.dart';
-import 'package:shop_fashion/screens/utilities/view_more.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
+import 'package:uni_store/controllers/product_controller.dart';
+import 'package:uni_store/models/product_model.dart';
+import 'package:uni_store/screens/utilities/info_product.dart';
+import 'package:uni_store/screens/utilities/notify.dart';
+import 'package:uni_store/screens/utilities/profile.dart';
+import 'package:uni_store/screens/utilities/view_more.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
+import 'package:uni_store/services/riverpod_product.dart';
 
 class Homeclient extends ConsumerStatefulWidget {
   const Homeclient({super.key});

@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/screens/welcome.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
-import 'package:shop_fashion/services/user_firebase.dart';
+import 'package:uni_store/controllers/user_controller.dart';
+import 'package:uni_store/screens/welcome.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
+import 'package:uni_store/services/user_firebase.dart';
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});

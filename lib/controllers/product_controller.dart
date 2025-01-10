@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
+import 'package:uni_store/models/product_model.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
+import 'package:uni_store/services/riverpod_product.dart';
 
 class ProductController {
   List<Product> dataAllProductController(WidgetRef ref) {

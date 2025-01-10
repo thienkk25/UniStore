@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shop_fashion/models/product_model.dart';
+import 'package:uni_store/models/product_model.dart';
 import 'package:http/http.dart' as http;
 
 final currentPageProductProvider = StateProvider<int>((ref) => 0);

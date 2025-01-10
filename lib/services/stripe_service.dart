@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_fashion/keys.dart';
+import 'package:uni_store/keys.dart';
 
 class StripeService {
   Future<String> makePayment(double amount) async {

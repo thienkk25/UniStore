@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
+import 'package:uni_store/services/riverpod_product.dart';
 
 final badgeNotifyProvider = StateProvider<int>((ref) => 0);
 final badgeCartProvider = StateProvider<int>((ref) => 0);

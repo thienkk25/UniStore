@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shop_fashion/services/user_firebase.dart';
+import 'package:uni_store/services/user_firebase.dart';
 
 class UserController {
   final UserFirebase userFirebase = UserFirebase();

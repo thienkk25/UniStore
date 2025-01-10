@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/product_controller.dart';
-import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/screens/utilities/info_product.dart';
-import 'package:shop_fashion/services/notify_service.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
-import 'package:shop_fashion/services/riverpod_product.dart';
+import 'package:uni_store/controllers/product_controller.dart';
+import 'package:uni_store/models/product_model.dart';
+import 'package:uni_store/screens/utilities/info_product.dart';
+import 'package:uni_store/services/notify_service.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
+import 'package:uni_store/services/riverpod_product.dart';
 
 class Wishlist extends ConsumerStatefulWidget {
   const Wishlist({super.key});

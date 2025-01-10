@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/product_controller.dart';
-import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/models/product_model.dart';
-import 'package:shop_fashion/services/notify_service.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
-import 'package:shop_fashion/services/stripe_service.dart';
+import 'package:uni_store/controllers/product_controller.dart';
+import 'package:uni_store/custom/button_view.dart';
+import 'package:uni_store/models/product_model.dart';
+import 'package:uni_store/services/notify_service.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
+import 'package:uni_store/services/stripe_service.dart';
 
 import '../../services/riverpod_product.dart';
 

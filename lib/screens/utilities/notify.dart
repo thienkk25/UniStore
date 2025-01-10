@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
-import 'package:shop_fashion/services/notify_service.dart';
+import 'package:uni_store/services/notify_service.dart';
 
 class Notify extends ConsumerWidget {
   const Notify({super.key});

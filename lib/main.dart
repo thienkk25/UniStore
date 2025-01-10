@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:shop_fashion/firebase_options.dart';
-import 'package:shop_fashion/keys.dart';
-import 'package:shop_fashion/screens/home.dart';
-import 'package:shop_fashion/screens/welcome.dart';
+import 'package:uni_store/firebase_options.dart';
+import 'package:uni_store/keys.dart';
+import 'package:uni_store/screens/home.dart';
+import 'package:uni_store/screens/welcome.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // Stripe.publishableKey = stripePublishableKey;
-  // await Stripe.instance.applySettings();
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/screens/signin.dart';
+import 'package:uni_store/custom/button_view.dart';
+import 'package:uni_store/screens/signin.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});

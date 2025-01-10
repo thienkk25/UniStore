@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/custom/text_form_field_view.dart';
-import 'package:shop_fashion/screens/forgot.dart';
-import 'package:shop_fashion/screens/home.dart';
-import 'package:shop_fashion/screens/signup.dart';
+import 'package:uni_store/controllers/user_controller.dart';
+import 'package:uni_store/custom/button_view.dart';
+import 'package:uni_store/custom/text_form_field_view.dart';
+import 'package:uni_store/screens/forgot.dart';
+import 'package:uni_store/screens/home.dart';
+import 'package:uni_store/screens/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends ConsumerStatefulWidget {

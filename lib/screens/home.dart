@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/Cart.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/explore_view.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/homeclient.dart';
-import 'package:shop_fashion/screens/bottomNavgBar/wishlist.dart';
-import 'package:shop_fashion/services/riverpod_home_view.dart';
+import 'package:uni_store/screens/bottomNavgBar/Cart.dart';
+import 'package:uni_store/screens/bottomNavgBar/explore_view.dart';
+import 'package:uni_store/screens/bottomNavgBar/homeclient.dart';
+import 'package:uni_store/screens/bottomNavgBar/wishlist.dart';
+import 'package:uni_store/services/riverpod_home_view.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shop_fashion/controllers/user_controller.dart';
-import 'package:shop_fashion/custom/button_view.dart';
-import 'package:shop_fashion/custom/text_form_field_view.dart';
+import 'package:uni_store/controllers/user_controller.dart';
+import 'package:uni_store/custom/button_view.dart';
+import 'package:uni_store/custom/text_form_field_view.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
