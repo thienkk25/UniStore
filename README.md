@@ -62,15 +62,8 @@ Discover thousands of products, from fashion, beauty, and technology to home dec
 ## Project results
 
 # Image:
-<img src="assets/resultScreen/welcome_screen.jpg" width="150">
-<img src="assets/resultScreen/signin_screen.jpg" width="150">
-<img src="assets/resultScreen/signup_screen.jpg" width="150">
-<img src="assets/resultScreen/forgot_screen.jpg" width="150">
-<img src="assets/resultScreen/home_screen.jpg" width="150">
-<img src="assets/resultScreen/explore_screen.jpg" width="150">
-<img src="assets/resultScreen/cart_screen.jpg" width="150">
-<img src="assets/resultScreen/infor_product_screen.jpg" width="150">
-<img src="assets/resultScreen/setting_screen.jpg" width="150">
+<img src="assets/resultScreen/welcome_screen.jpg" width="150"> <img src="assets/resultScreen/signin_screen.jpg" width="150"> <img src="assets/resultScreen/signup_screen.jpg" width="150"> <img src="assets/resultScreen/forgot_screen.jpg" width="150"> <img src="assets/resultScreen/home_screen.jpg" width="150"> <img src="assets/resultScreen/explore_screen.jpg" width="150"> <img src="assets/resultScreen/cart_screen.jpg" width="150"> <img src="assets/resultScreen/infor_product_screen.jpg" width="150"> <img src="assets/resultScreen/setting_screen.jpg" width="150">
 
 # Video:
-<iframe src="https://youtube.com/shorts/ZJx1Qil9T7k?feature=share" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[Link demo](https://youtube.com/shorts/ZJx1Qil9T7k?feature=share)
+<iframe width="560" height="315" src="https://www.youtube.com/shorts/ZJx1Qil9T7k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
