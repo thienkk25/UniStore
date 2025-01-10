@@ -66,4 +66,5 @@ Discover thousands of products, from fashion, beauty, and technology to home dec
 
 # Video:
 [Link demo](https://youtube.com/shorts/ZJx1Qil9T7k?feature=share)
-<iframe width="560" height="315" src="https://www.youtube.com/shorts/ZJx1Qil9T7k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZJx1Qil9T7k?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
