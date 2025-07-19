@@ -65,6 +65,6 @@ Discover thousands of products, from fashion, beauty, and technology to home dec
 <img src="assets/resultScreen/welcome_screen.jpg" width="150"> <img src="assets/resultScreen/signin_screen.jpg" width="150"> <img src="assets/resultScreen/signup_screen.jpg" width="150"> <img src="assets/resultScreen/forgot_screen.jpg" width="150"> <img src="assets/resultScreen/home_screen.jpg" width="150"> <img src="assets/resultScreen/explore_screen.jpg" width="150"> <img src="assets/resultScreen/cart_screen.jpg" width="150"> <img src="assets/resultScreen/infor_product_screen.jpg" width="150"> <img src="assets/resultScreen/setting_screen.jpg" width="150"> <img src="assets/resultScreen/wishlist_screen.jpg" width="150">
 
 ### Video:
-[Link Youtube demo](https://youtube.com/shorts/ZJx1Qil9T7k?feature=share)
-[Link Cloudinary demo](https://res.cloudinary.com/dksr7si4o/video/upload/v1752901750/flutter/video_kq/App_UniStore_demo_jrnsef.mp4)
+- [Link Youtube demo](https://youtube.com/shorts/ZJx1Qil9T7k?feature=share)
+- [Link Cloudinary demo](https://res.cloudinary.com/dksr7si4o/video/upload/v1752901750/flutter/video_kq/App_UniStore_demo_jrnsef.mp4)
 
