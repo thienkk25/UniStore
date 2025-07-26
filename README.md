@@ -49,16 +49,6 @@ Discover thousands of products, from fashion, beauty, and technology to home dec
 ### 5. **Other Tools and Libraries**  
 - **Payment Gateway**: Integration with payment gateways (Stripe).  
 
-## Installation and Deployment  
-1. Clone the repository:  
-   ```bash  
-   git clone https://github.com/thienkk25/UniStore.git  
-   ```
-2. Install dependencies:
-    After cloning the repository, open the project folder in Visual Studio Code or IDE and run the following command to install the dependencies:
-    ```bash  
-   flutter pub get
-   ```
 ## Project results
 
 ### Image:
